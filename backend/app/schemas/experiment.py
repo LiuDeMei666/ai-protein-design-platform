@@ -83,6 +83,17 @@ class IngestResultOut(BaseModel):
     preview: list[dict[str, Any]] = Field(default_factory=list)
 
 
+class CalibrationOut(BaseModel):
+    """一阶线性校准系数：``实测 ≈ slope × 平台评分 + intercept``。
+
+    平台指标是 0-100 评分，实测值有各自量纲（°C、%、U/mg），两者不同尺度，
+    所以要先做一次线性校准，MAE / RMSE / R² 才有物理意义。
+    """
+
+    slope: float
+    intercept: float
+
+
 class PropertyComparisonOut(BaseModel):
     """单个属性的预测-实测对比。"""
 
@@ -99,6 +110,10 @@ class PropertyComparisonOut(BaseModel):
     verdict: str = ""
     points: list[dict[str, Any]] = Field(default_factory=list)
     worst_offsets: list[dict[str, Any]] = Field(default_factory=list)
+    #: 校准系数。**必须声明**：响应模型只保留声明过的字段，
+    #: 漏声明会让 services/experiment/compare.py 里算好的 slope/intercept
+    #: 在序列化时被静默丢弃，前端读 item.calibration.slope 直接抛 TypeError。
+    calibration: CalibrationOut | None = None
 
 
 class ComparisonOut(BaseModel):

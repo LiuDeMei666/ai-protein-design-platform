@@ -10,7 +10,7 @@ from fastapi.responses import Response, StreamingResponse
 from sqlalchemy.orm import Session
 
 from ...core.errors import NotFoundError, ValidationError
-from ...db.models import ExperimentRecord, ProteinSequence
+from ...db.models import ExperimentRecord, Project, ProteinSequence
 from ...schemas.common import OkOut, Page
 from ...schemas.experiment import (
     ComparisonOut,
@@ -121,6 +121,28 @@ async def ingest_file(
     unresolved: dict[str, int] = {}
     elsewhere: dict[str, int] = {}
     resolved_rows = 0
+
+    # 显式指定序列时校验归属
+    # ----------------------
+    # 此前这里是直接赋值、不做任何检查。后果是记录可以"挂在 A 项目、却引用
+    # B 项目的序列"：项目列表与看板按 project_id 统计、预测-实测对比按
+    # sequence_id 过滤，两边对"这批数据属于谁"的认知不一致，排查极费劲。
+    #
+    # 只提示、不阻断：跨项目复用一条参考序列是合法需求，硬拦会挡住正当用法；
+    # 但必须让人知道自己在做什么。同一次请求只提示一条，不按行重复。
+    if sequence_id is not None:
+        explicit_sequence = session.get(ProteinSequence, sequence_id)
+        if explicit_sequence is None:
+            raise ValidationError(f"序列 id={sequence_id} 不存在")
+        if explicit_sequence.project_id != project_id:
+            owner = session.get(Project, explicit_sequence.project_id)
+            association_notes.append(
+                f"所选序列「{explicit_sequence.name}」属于项目「"
+                f"{owner.name if owner else explicit_sequence.project_id}」，"
+                "与本次导入的目标项目不一致。记录将按当前项目保存，"
+                "这会导致项目归属与序列归属不一致（列表与统计按项目过滤，"
+                "对比按序列过滤）。如非有意为之，建议切换到该项目后重新导入。"
+            )
 
     for item in parsed:
         item.payload.setdefault("project_id", project_id)

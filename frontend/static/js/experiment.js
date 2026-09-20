@@ -53,7 +53,18 @@
 
   async function loadSequences() {
     try {
-      const page = await get("/sequences", { limit: 200, with_sequence: false });
+      // 必须按当前项目过滤。
+      // 不带 project_id 时后端返回**所有项目**的序列，于是「关联序列」与
+      // 「对比序列」里会混入其它项目的序列。选错的后果不只是选错一条——
+      // 记录会「挂在本项目、引用另一个项目的序列」，而项目列表与看板按
+      // project_id 统计、预测-实测对比按 sequence_id 过滤，
+      // 两边对"这批数据属于谁"的认知就不一致了，排查起来非常费劲。
+      const projectId = App.currentProjectId();
+      const page = await get("/sequences", {
+        limit: 200,
+        with_sequence: false,
+        ...(projectId ? { project_id: projectId } : {}),
+      });
       sequences = page.items || [];
       const options = sequences
         .map(
@@ -366,8 +377,17 @@
                 </div>
                 <div class="text-xs text-2 mt-2">${fmt.escape(item.verdict)}</div>
                 <div class="text-xs text-2 mt-1">
-                  线性校准：实测 ≈ ${fmt.num(item.calibration.slope, 4)} × 评分 +
-                  ${fmt.num(item.calibration.intercept, 2)}
+                  ${
+                    // 必须判空：calibration 缺失时若直接取 .slope 会抛 TypeError，
+                    // 整个对比结果区都渲染不出来（比少显示一行严重得多）。
+                    // 下方渲染散点图时用的也是同样的判断。
+                    item.calibration
+                      ? `线性校准：实测 ≈ ${fmt.num(item.calibration.slope, 4)} × 评分 + ${fmt.num(
+                          item.calibration.intercept,
+                          2
+                        )}`
+                      : "线性校准不可用（样本点少于 2 个，或预测值无变化）"
+                  }
                 </div>
                 ${
                   item.worst_offsets && item.worst_offsets.length

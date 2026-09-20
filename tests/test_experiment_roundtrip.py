@@ -177,6 +177,75 @@ class TestIngestViaApi:
         assert csv_response.content.startswith("\ufeff".encode())
 
 
+class TestSequenceAssociation:
+    """导入时的序列关联校验。
+
+    这条不变量守的是数据一致性：项目列表与看板按 ``project_id`` 统计、
+    预测-实测对比按 ``sequence_id`` 过滤。若允许"记录挂在 A 项目、却引用
+    B 项目的序列"而不出声，两边对"这批数据属于谁"的认知就不一致了，
+    而且这类问题在界面上完全看不出来，排查代价极高。
+    """
+
+    @staticmethod
+    def _create_project(api_client, name: str) -> int:
+        response = api_client.post("/api/projects", json={"name": name})
+        assert response.status_code in (200, 201), response.text
+        return response.json()["id"]
+
+    @staticmethod
+    def _create_sequence(api_client, project_id: int, name: str, sequence: str) -> int:
+        response = api_client.post(
+            "/api/sequences",
+            json={
+                "project_id": project_id,
+                "name": name,
+                "sequence": sequence,
+                "protein_type": "generic",
+            },
+        )
+        assert response.status_code in (200, 201), response.text
+        return response.json()["id"]
+
+    @staticmethod
+    def _ingest(api_client, project_id: int, **extra):
+        content = _csv_bytes(
+            [["样品", "", "热稳定性", "62.0", "°C", "assoc-cond", "1", "张三", "2026-03-01", ""]],
+            HEADER,
+        )
+        return api_client.post(
+            "/api/experiment/ingest",
+            files={"file": ("t.csv", content, "text/csv")},
+            data={"project_id": str(project_id), "dry_run": "true", **extra},
+        )
+
+    def test_cross_project_sequence_is_reported(self, api_client, sample_sequence):
+        """显式选了别的项目的序列：允许，但必须在报告里说明。"""
+        other_project = self._create_project(api_client, "另一个项目")
+        sequence_id = self._create_sequence(
+            api_client, other_project, "跨项目序列", sample_sequence
+        )
+
+        response = self._ingest(api_client, 1, sequence_id=str(sequence_id))
+        assert response.status_code == 200
+        joined = " ".join(response.json()["report"]["warnings"])
+        assert "另一个项目" in joined, "应指出序列实际所属的项目名"
+        assert "不一致" in joined
+
+    def test_same_project_sequence_is_silent(self, api_client, sample_sequence):
+        project = self._create_project(api_client, "同项目测试")
+        sequence_id = self._create_sequence(api_client, project, "同项目序列", sample_sequence)
+
+        response = self._ingest(api_client, project, sequence_id=str(sequence_id))
+        assert response.status_code == 200
+        warnings = response.json()["report"]["warnings"]
+        assert not any("不一致" in item for item in warnings)
+
+    def test_unknown_sequence_is_rejected(self, api_client):
+        """此前不存在的 sequence_id 会被直接写入，现在明确报错。"""
+        response = self._ingest(api_client, 1, sequence_id="999999")
+        assert response.status_code == 400
+
+
 class TestMutationLabelValidation:
     """突变标签与序列的一致性校验（挡住最常见的录入错误）。"""
 
