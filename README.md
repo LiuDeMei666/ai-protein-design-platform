@@ -37,6 +37,79 @@ bash run_server.sh
 
 ---
 
+## 参与开发（团队协作）
+
+仓库托管在 GitHub。克隆下来只有约 3 MB——**模型权重不在仓库里**（约 5.2 GB），
+按上面「快速开始」第 3 步用脚本拉取。
+
+### 什么进仓库，什么不进
+
+这是本项目最容易踩的坑，**不要绕过 `.gitignore` 手工 `git add` 大文件**：
+
+| ✅ 进仓库 | 原因 |
+|---|---|
+| `backend/` `frontend/static/` `scripts/` `tests/` `configs/` | 源码 |
+| `frontend/vendor/` | 第三方 JS 库，**离线环境没法现拉** |
+| `data/seeds/` | 参考序列与密码子表，离线必需；且换了会影响预测结果，需要版本化 |
+| `data/validation/case_*.json` | 标准案例的验收基准快照，用来判断"这次改动有没有改变结果" |
+
+| ❌ 不进仓库 | 原因 |
+|---|---|
+| `models/`（约 5.2 GB） | 可再生；且 GitHub 单文件限 100 MB，**一旦进过历史就永久膨胀** |
+| `data/db/` | SQLite 业务库：二进制无法合并，且承载企业真实录入数据 |
+| `data/cache/` `data/uploads/` `logs/*` | 运行时产物 |
+| `.env` | 机器相关配置与可选密钥（模板见 `.env.example`） |
+
+CI 的 `repo-guard` 作业会**自动拦住**超过 5 MB 的文件与上述目录，不必自己盯。
+
+### 分支与提交
+
+```
+main            ← 随时可交付、随时能起服务；只通过 PR 合入
+ └─ feat/xxx    ← 特性分支，短生命周期
+ └─ fix/xxx
+```
+
+* `main` 必须始终能跑起来，合并前 CI 必须绿。
+* 提交信息写**为什么**而不是**改了什么**。例如「修复 `.track` 类名冲突导致开关滑块被撑满」
+  优于「改 css」。
+* PR 模板（`.github/PULL_REQUEST_TEMPLATE.md`）会在开 PR 时自动带出，里面是本项目的自查清单。
+
+### 分工建议
+
+模块边界清晰，多数工作可以并行：
+
+| 可独立并行 | 需要先协调（改前说一声） |
+|---|---|
+| `services/property/` 理化性质 | `backend/app/schemas/` 前后端契约 |
+| `services/structure/` 结构预测 | `configs/default.yaml` 全局配置 |
+| `services/design/` 突变设计 | `services/property/metric.py` 的指标标签表 |
+| 单个前端页面（一个 html + 对应 js） | `frontend/static/css/app.css` 全局样式 |
+
+前端是**零构建、无模块化框架**的：`app.js` 与 `app.css` 为所有页面共用，没有隔离机制。
+因此约定 **一个 PR 只动一个页面**；改全局样式单独开 PR，并在描述里说明影响面。
+
+### CI 会做什么、不做什么
+
+`.github/workflows/ci.yml` 共三个作业，约一两分钟：
+
+1. **仓库边界守卫** —— 超 5 MB 文件、运行时目录混入，直接失败。
+2. **语法检查** —— Python 语法、Shell 脚本语法（并检测 CRLF）、YAML 可解析。
+3. **测试** —— `pytest -m "not slow" -rs`。
+
+**刻意不安装 torch / transformers / safetensors / peft（合计约 2.5 GB）**，所以
+**依赖 ESM-2 权重的用例在 CI 上不会真正执行**，需要在部署机上补齐：
+
+```bash
+python -m pytest -m slow     # 只跑需要 GPU 与权重的用例
+python -m pytest -rs         # 全跑；缺权重时那批会 skip，-rs 打印跳过原因
+```
+
+> `slow` 标记由 `tests/conftest.py` 按"是否依赖 `esm_available` 夹具"**自动**打上，
+> 新增用例时无需手工标记，因此 `-m "not slow"` 永远准确等价于"不依赖模型的那批"。
+
+---
+
 ## 核心能力
 
 | 模块 | 能力 |
@@ -91,6 +164,8 @@ danbaizhi/
 ├── run_server.sh                # 启动脚本
 ├── requirements.txt             # 依赖清单（版本已锁定）
 ├── .env.example                 # 环境变量样例
+├── .gitignore / .gitattributes  # 仓库边界与换行符规范
+├── .github/                     # CI（3 个作业）与 PR 模板
 ├── configs/default.yaml         # 平台参数（评分权重、规则包、阈值）
 ├── backend/app/
 │   ├── core/                    # 配置 / 日志 / 异常
@@ -101,22 +176,24 @@ danbaizhi/
 │   │   ├── structure/           # Provider 抽象、域切分、PDB 解析、结构分析
 │   │   ├── embedding/           # ESM-2 嵌入与掩码边缘打分
 │   │   ├── property/            # 9 项性质预测引擎
-│   │   ├── design/              # 突变设计（扫描/打分/规则包/组合/可解释）
+│   │   ├── design/              # 突变设计（扫描/打分/规则包/组合/可解释/人工指定）
 │   │   └── experiment/          # 数据导入与预测-实测对比
 │   ├── ml/                      # 属性头、训练编排、模型版本注册
 │   ├── jobs/                    # 进程内异步作业队列与执行器
-│   └── api/routes/              # REST 路由（53 个端点）
+│   └── api/routes/              # REST 路由（55 个端点）
 ├── frontend/                    # 零构建前端（5 个页面）
-│   ├── vendor/                  # 本地化第三方库（离线可用）
+│   ├── vendor/                  # 本地化第三方库（离线可用，进仓库）
 │   └── static/                  # 设计系统与页面逻辑
 ├── data/
 │   ├── seeds/                   # 标准序列 + Kazusa 密码子表
-│   ├── cache/                   # 结构 / 嵌入 / PDB 缓存
-│   ├── db/platform.db           # SQLite 数据库
-│   └── validation/              # 验证案例结果与 UI 截图
-├── models/                      # ESM-2 权重（独立缓存）与属性头产物
+│   ├── templates/               # 录入模板与示例
+│   ├── validation/              # 验收基准快照（case_*.json 入库；ui/ 截图不入库）
+│   ├── cache/                   # ✗ 不入库：结构 / 嵌入 / PDB 缓存
+│   └── db/platform.db           # ✗ 不入库：SQLite 数据库
+├── models/                      # ✗ 不入库：ESM-2 权重（约 5.2 GB，用脚本拉取）
 ├── scripts/                     # 数据获取、案例运行、UI 验证
 ├── docs/                        # 交付文档
+├── logs/                        # ✗ 不入库：仅留 .gitkeep 固定目录
 └── tests/                       # 单元与接口测试
 ```
 
