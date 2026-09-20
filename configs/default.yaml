@@ -1,0 +1,164 @@
+# ============================================================
+# AI 辅助蛋白设计平台 - 平台参数
+# 修改此文件即可调整评分权重与规则包行为，无需改代码。
+# ============================================================
+
+# ---------- 突变候选的多维评分权重 ----------
+# contribution = raw * weight；risk 为惩罚项（risk_is_penalty 为 true 时按负向计入）
+scoring:
+  risk_is_penalty: true
+  dimensions:
+    stability:
+      label: 稳定性贡献
+      weight: 0.28
+      description: 突变对折叠态稳定性的影响（基于 ESM-2 掩码边缘似然比）
+    activity:
+      label: 活性影响
+      weight: 0.24
+      description: 突变对催化/结合功能的影响（保守性 + 活性位点邻近度）
+    foldability:
+      label: 折叠可行性
+      weight: 0.18
+      description: 突变后序列的可折叠性（野生型 pLDDT 先验 + 突变耐受度）
+    expression:
+      label: 宿主表达适配
+      weight: 0.12
+      description: 宿主密码子适应指数、稀有密码子、N 端规则（Met 后残基）综合
+    risk:
+      label: 新增风险位点
+      weight: 0.18
+      description: 是否引入脱酰胺/氧化/异构化敏感位点、游离 Cys、聚集斑块等
+
+# ---------- 组合突变搜索 ----------
+combination:
+  max_sites: 3          # 单次组合最多叠加位点数
+  beam_width: 8         # 束搜索宽度
+  epitasis_penalty: 0.35  # 位点间距过近时的上位效应惩罚系数
+  min_site_distance: 3    # 组合位点间最小间隔（残基），低于此值施加惩罚
+
+# ---------- 扫描范围 ----------
+scan:
+  max_positions: 1200       # 单次扫描的最大位点数，防止误操作导致超长耗时
+  exclude_terminal: 1       # 序列两端各排除的残基数
+  conserve_threshold: 0.85  # 保守性高于该阈值时标记为"高度保守"并降权
+
+# ---------- 零样本突变打分（ESM-2 掩码边缘） ----------
+design:
+  # ΔlogP = logP(突变型 | 掩码上下文) - logP(野生型 | 掩码上下文)
+  # 实测天然蛋白的野生型掩码对数概率约 -3 ~ -1；有害突变 ΔlogP 常低于 -7
+  zero_shot:
+    delta_worst: -7.0   # 映射到 0 分的 ΔlogP
+    delta_best: 0.0     # 映射到 100 分的 ΔlogP（>= 0 即满分）
+  # 折叠可行性
+  foldability:
+    plddt_weight: 0.45      # 野生型 pLDDT 先验权重
+    tolerance_weight: 0.35  # 模型耐受度权重
+    ss_weight: 0.20         # 二级结构上下文权重
+  # 活性影响
+  activity:
+    conservation_weight: 0.55   # 模型保守性（ΔlogP）权重
+    proximity_weight: 0.25      # 与功能位点距离权重
+    rulepack_weight: 0.20       # 规则包活性偏好权重
+  # 新增风险位点判定
+  risk:
+    volume_change_penalty: 60.0   # 埋藏位点体积变化的惩罚系数（Å³ 尺度）
+    buried_sasa_threshold: 0.15   # 相对 SASA 低于此值视为埋藏位点
+    prefer_surface: true          # 是否优先推荐表面位点
+
+# ---------- 规则包 ----------
+rulepacks:
+  # 通用：保护推定信号肽区（启发式识别，见 feature_utils.detect_signal_peptide）。
+  # 分泌型重组蛋白的 N 端信号肽在成熟过程中被切除，该区段的突变推荐对产品无意义。
+  # 若序列本身就是成熟蛋白/无信号肽，或需要分析信号肽本身，可设为 false 关闭。
+  collagen:
+    enabled: true
+    protect_signal_peptide: true
+    # 三股螺旋重复基序：Gly-X-Y
+    repeat_motif: "G.."
+    # 羟脯氨酸候选：Y 位上的 Pro
+    hydroxylation_hotspot: P
+    # 交联候选：Lys 参与赖氨酰氧化酶交联
+    crosslink_residues: [K, H]
+    # 三股螺旋区允许的替换（保持 Gly 严格保守）
+    gly_strict: true
+    description: 胶原蛋白三股螺旋稳定性、羟脯氨酸位点与交联位点设计
+
+  protease:
+    enabled: true
+    protect_signal_peptide: true
+    # 典型丝氨酸蛋白酶催化三联体（枯草杆菌蛋白酶编号，用于位点保护）
+    catalytic_triad: [S221, H64, D32]
+    # 氧负离子洞
+    oxyanion_hole: [N155]
+    # 底物结合口袋（S1-S4）
+    substrate_pocket: [S125, L126, G127, P129, E156, Y217]
+    # 耐热改造偏好：引入更多带电/芳香残基，避免新增柔性 Gly
+    thermostability_bias:
+      preferred: [E, K, R, Y, F, W, P]
+      discouraged: [G, N, Q, C, M]
+    description: 重组蛋白酶催化效率(kcat/Km)、pH/温度适应与底物特异性改造
+
+  protein_a:
+    enabled: true
+    protect_signal_peptide: true
+    # 蛋白 A Z 结构域 Fc 结合热点（相对编号，1..58）
+    fc_binding_hotspots: [8, 9, 10, 11, 12, 13, 25, 26, 27, 28, 29, 40, 41, 42]
+    # 耐碱改造：Asn 脱酰胺是碱性条件下失活主因，优先 N->Q/D 等替换
+    alkali_labile: [N, Q]
+    alkali_preferred: [Q, D, E, T, S, A]
+    description: 蛋白 A 亲和力与耐碱性提升
+
+  generic:
+    enabled: true
+    protect_signal_peptide: true
+    # 通用保护：绝对保守位点由扫描阶段的保守性判断自动加入
+    avoid_free_cysteine: true
+    avoid_glycine_in_helix: true
+    description: 通用蛋白改造规则
+
+# ---------- 宿主表达体系（用于密码子适应指数等指标） ----------
+# table 指向 data/seeds/codon_usage/<table>.json，由 scripts/fetch_codon_usage.py 生成
+host_systems:
+  ecoli:
+    label: "大肠杆菌 E. coli (K-12/W3110)"
+    table: ecoli_k12
+    note: "4332 CDS / 1,372,057 codons"
+  yeast:
+    label: "毕赤酵母 P. pastoris"
+    table: pichia_pastoris
+    note: "137 CDS / 81,301 codons（样本较小，CAI 解释需谨慎）"
+  bacillus:
+    label: "枯草芽孢杆菌 B. subtilis"
+    table: bacillus_subtilis
+    note: "2529 CDS / 815,445 codons"
+  cho:
+    label: "CHO 细胞 C. griseus"
+    table: cho
+    note: "331 CDS / 153,527 codons"
+  saccharomyces:
+    label: "酿酒酵母 S. cerevisiae"
+    table: saccharomyces_cerevisiae
+    note: "14411 CDS / 6,534,504 codons"
+
+# ---------- 风险等级阈值 ----------
+risk_thresholds:
+  low: 0.33
+  medium: 0.66
+
+# ---------- 结构分析 ----------
+structure:
+  # pLDDT 置信度分级（与 AlphaFold 官方一致）
+  plddt_bands:
+    very_high: 90
+    confident: 70
+    low: 50
+  # 疏水核心暴露判定：相对 SASA 阈值
+  burial_sasa_cutoff: 0.25
+  contact_map_max_length: 600   # 超过此长度不生成接触图（前端渲染成本）
+
+# ---------- 免疫原性筛查 ----------
+immunogenicity:
+  # MHC-II 9 聚体锚位倾向权重（简化版启发式）
+  window_size: 9
+  amphipathic_threshold: 0.45
+  top_epitopes: 10

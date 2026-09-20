@@ -1,0 +1,8 @@
+# 这个文件的存在是为了让 logs/ 目录被纳入版本控制。
+#
+# 为什么需要它：logs/ 目录是程序启动时（core/config.py 的目录校验器）才创建的，
+# 但常见用法 `nohup bash run_server.sh > logs/server.log 2>&1 &` 里的重定向
+# 发生在程序启动**之前**。若 logs/ 不存在，shell 会直接报
+# "No such file or directory" 而脚本根本不会执行——在全新克隆的机器上很容易踩到。
+#
+# 目录本身入库，目录内容不入库（见 .gitignore 的 logs/* 规则）。

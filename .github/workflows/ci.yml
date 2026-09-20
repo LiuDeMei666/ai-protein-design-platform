@@ -1,0 +1,164 @@
+name: CI
+
+# 触发：向 main 推送、以及所有 PR。
+# 之所以在 push 到 main 时也跑：main 必须永远处于"可交付"状态，
+# 合并后再发现红比在 PR 阶段发现代价高得多。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 同一分支连续推送时取消上一次未跑完的运行，省额度、也让结果更快落地
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ==========================================================================
+  # 1) 仓库体积守卫
+  # --------------------------------------------------------------------------
+  # 这是本仓库**最需要**的一道闸门：项目里有 5.2 GB 的 ESM-2 权重与 SQLite
+  # 业务库，一旦某次 git add . 把它们提交进去，历史就永久膨胀，只能重写
+  # 历史才能清掉。宁可在 PR 阶段直接拦下来。
+  # ==========================================================================
+  repo-guard:
+    name: 仓库边界守卫
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 检查是否有超大文件被纳入版本控制
+        run: |
+          set -euo pipefail
+          LIMIT=$((5 * 1024 * 1024))   # 5 MB：最大的第三方库约 1 MB，留足余量
+          failed=0
+          while IFS= read -r -d '' file; do
+            [ -f "$file" ] || continue
+            size=$(stat -c %s "$file")
+            if [ "$size" -gt "$LIMIT" ]; then
+              mb=$(( size / 1024 / 1024 ))
+              echo "::error file=${file}::已纳入版本控制的文件达 ${mb} MB，超过 5 MB 上限"
+              failed=1
+            fi
+          done < <(git ls-files -z)
+          if [ "$failed" -ne 0 ]; then
+            echo "提示：模型权重用 scripts/download_esm2.py 拉取；" \
+                 "缓存与数据库属于运行时产物，应写入 .gitignore。"
+            exit 1
+          fi
+          echo "未发现超大文件（跟踪文件数 $(git ls-files | wc -l)）"
+
+      - name: 确认运行时状态目录未被跟踪
+        run: |
+          set -euo pipefail
+          bad=$(git ls-files | grep -E '^(models/|data/db/|data/cache/|data/uploads/)' || true)
+          # logs/ 目录本身要保留（重定向写日志时目录不存在会报错），但只允许 .gitkeep
+          bad="$bad$(git ls-files 'logs/*' | grep -v '^logs/\.gitkeep$' || true)"
+          if [ -n "$bad" ]; then
+            echo "::error::下列运行时状态文件不应纳入版本控制："
+            echo "$bad" | sed 's/^/  /'
+            exit 1
+          fi
+          echo "运行时状态目录均未被跟踪"
+
+  # ==========================================================================
+  # 2) 语法与配置可解析性
+  # --------------------------------------------------------------------------
+  # 不装依赖、秒级完成。零构建前端没有编译步骤，这些检查是唯一能拦住
+  # 低级错误（语法错、脚本换行符被改成 CRLF、YAML 缩进错）的地方。
+  # ==========================================================================
+  syntax:
+    name: 语法检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Python 语法
+        run: python -m compileall -q backend scripts tests
+
+      - name: Shell 脚本语法
+        run: |
+          set -euo pipefail
+          # 同时防一手 CRLF：CRLF 的 shell 脚本在 Linux 上会报
+          # `bad interpreter: /bin/bash^M`，且原因极难一眼看出。
+          for f in $(git ls-files '*.sh'); do
+            if grep -qU $'\r' "$f"; then
+              echo "::error file=${f}::脚本含 CR 字符（换行符为 CRLF），请改为 LF"
+              exit 1
+            fi
+            echo "→ bash -n $f"
+            bash -n "$f"
+          done
+
+      - name: 平台配置可解析
+        run: |
+          python -m pip install --quiet pyyaml
+          python -c "import glob,yaml; [yaml.safe_load(open(f,encoding='utf-8')) for f in glob.glob('configs/*.yaml')]; print('configs/*.yaml 解析通过')"
+
+  # ==========================================================================
+  # 3) 单元与接口测试（CPU）
+  # --------------------------------------------------------------------------
+  # 刻意**不安装** torch / transformers / safetensors / peft（合计约 2.5 GB）：
+  #   * 应用对它们是惰性导入（见 services/embedding/esm2.py），缺失不影响启动；
+  #   * 依赖 ESM-2 权重的用例（共 2 个）会被 conftest 自动打上 slow 标记并跳过。
+  # 这样 CI 从"十几分钟 + 2.5 GB 下载"压到"一两分钟"，PR 反馈才有人看。
+  # 代价是覆盖不到模型相关路径——那部分请在部署机（有 GPU 与权重）上跑：
+  #     python -m pytest -m slow
+  # ==========================================================================
+  test:
+    name: 单元与接口测试（CPU）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 安装依赖（排除深度学习货架）
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          grep -v -E '^(torch|transformers|safetensors|peft)==' requirements.txt > /tmp/req-ci.txt
+          python -m pip install -r /tmp/req-ci.txt
+          echo "已安装：$(wc -l < /tmp/req-ci.txt) 个包（已剔除 4 个深度学习依赖）"
+
+      - name: 运行测试
+        env:
+          PYTHONNOUSERSITE: "1"
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          set -o pipefail
+          # -rs 必须保留：打印每个 skip 的原因。
+          # 本项目的模型用例是靠"缺权重 -> 夹具 skip"来排除的，
+          # 不打印原因的话，跳过与通过看起来一模一样，覆盖率掉了没人知道。
+          python -m pytest -m "not slow" -rs --tb=short --durations=10 \
+            -p no:cacheprovider 2>&1 | tee /tmp/pytest.log
+
+      - name: 写入作业摘要
+        if: always()
+        run: |
+          {
+            echo "### 测试摘要"
+            echo ""
+            echo '```'
+            grep -E '(passed|failed|error|skipped)' /tmp/pytest.log | tail -3 || echo "（无摘要行）"
+            echo '```'
+            echo ""
+            echo "> 需要 ESM-2 权重与 GPU 的用例已按 \`slow\` 标记排除，"
+            echo "> 请在部署机上补齐：\`python -m pytest -m slow\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 失败时上传完整日志
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-log
+          path: /tmp/pytest.log
+          retention-days: 7

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>序列与结构 · AI 辅助蛋白设计平台</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="app">
+  <header id="app-nav"></header>
+
+  <main class="app-main">
+    <div class="page-head">
+      <div>
+        <div class="page-title">序列与结构</div>
+        <div class="page-desc">
+          粘贴序列或上传 FASTA，平台会自动清洗并校验（非法字符、歧义残基、长度上限）。
+          结构预测会按残基置信度（pLDDT）着色，并在超长序列自动分片时明确标注片段边界。
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn btn-sm" id="btn-sample">载入示例</button>
+        <button class="btn btn-sm" id="btn-save">保存到项目</button>
+        <button class="btn btn-primary" id="btn-predict">预测三维结构</button>
+      </div>
+    </div>
+
+    <div id="alerts"></div>
+
+    <div class="grid grid-aside-main">
+      <!-- 输入区 -->
+      <div class="col">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>目标蛋白序列</div>
+            <span class="panel-sub" id="seq-counter">0 aa</span>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <div class="field-label">
+                <span>氨基酸序列或 FASTA 文本</span>
+                <span class="text-xs text-2" id="validate-hint">实时校验中…</span>
+              </div>
+              <textarea class="textarea seq" id="sequence" spellcheck="false"
+                placeholder="MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG&#10;&#10;可直接粘贴序列，或粘贴带 > 头的 FASTA 内容"></textarea>
+              <div class="field-hint">
+                允许 20 种标准氨基酸。B/Z/J/X/U/O 为歧义残基：性质预测可用（会提示置信度下降），
+                但突变设计要求全部为标准氨基酸。
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-label"><span>快速导入</span></div>
+              <div class="row">
+                <input type="file" id="file-input" accept=".fasta,.fa,.txt,.seq" style="display:none">
+                <button class="btn btn-sm" id="btn-upload">选择 FASTA 文件</button>
+                <span class="text-xs text-2">或把文件拖到下方输入框</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">
+                <span>蛋白类型（决定启用哪个规则包）</span>
+              </div>
+              <div class="chips" id="protein-types"></div>
+              <div class="field-hint" id="type-hint">通用规则包：表面优先、避免新增游离半胱氨酸。</div>
+            </div>
+
+            <div class="field">
+              <div class="field-label"><span>结构预测通道</span></div>
+              <div class="row">
+                <select class="select" id="provider" style="flex:1">
+                  <option value="">自动（按可用性降级）</option>
+                  <option value="esmatlas">ESM Atlas（在线，快）</option>
+                  <option value="local_esmfold">本地 ESMFold（需安装 fair-esm）</option>
+                  <option value="stub">离线占位（仅演示）</option>
+                </select>
+                <label class="switch nowrap">
+                  <input type="checkbox" id="allow-split" checked>
+                  <span class="track"></span><span>超长自动分片</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="check-panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>校验与组成</div>
+          </div>
+          <div class="panel-body" id="check-body">
+            <div class="text-2 text-sm">输入序列后自动显示校验结果与氨基酸组成。</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 结构区 -->
+      <div class="col">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>三维结构</div>
+            <span class="panel-sub" id="structure-source">尚未预测</span>
+          </div>
+          <div class="panel-body flush">
+            <div class="viewer-shell">
+              <div id="viewer" style="position:relative;height:430px">
+                <div class="viewer-overlay" id="viewer-overlay">
+                  <div style="font-size:26px;opacity:.4">◇</div>
+                  <div>输入序列后点击「预测三维结构」</div>
+                  <div class="text-xs text-2">ESM Atlas 在线通道对 400 残基以内序列通常数秒返回</div>
+                </div>
+              </div>
+              <div class="viewer-tools hidden" id="viewer-tools">
+                <span class="viewer-tool active" data-style="cartoon">卡通</span>
+                <span class="viewer-tool" data-style="stick">棒状</span>
+                <span class="viewer-tool" data-style="line">线框</span>
+                <span class="viewer-tool" data-style="surface">表面</span>
+                <span class="viewer-tool" id="tool-spin">自旋</span>
+                <span class="viewer-tool" id="tool-reset">复位</span>
+              </div>
+              <div class="viewer-legend hidden" id="viewer-legend"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PDB 文件内容 -->
+        <section class="panel mt-2">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>PDB 文件内容</div>
+            <div class="row" style="gap:8px">
+              <span class="panel-sub" id="pdb-sub">尚未生成</span>
+              <button class="btn btn-sm" id="btn-pdb-copy" disabled>复制</button>
+              <button class="btn btn-sm" id="btn-pdb-size" disabled>放大</button>
+              <a class="btn btn-sm" id="btn-pdb-download" href="#" download disabled>下载 PDB</a>
+            </div>
+          </div>
+          <div class="panel-body flush">
+            <div class="pdb-shell" id="pdb-shell">
+              <div class="pdb-meta" id="pdb-meta"></div>
+              <div class="pdb-body">
+                <pre class="pdb-gutter" id="pdb-gutter"></pre>
+                <pre class="pdb-code" id="pdb-code"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-2 mt-2" id="structure-metrics"></div>
+
+        <section class="panel mt-2">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>结构统计</div>
+            <span class="panel-sub" id="structure-elapsed">—</span>
+          </div>
+          <div class="panel-body" id="structure-stats">
+            <div class="text-2 text-sm">预测完成后显示二级结构组成、回旋半径、疏水核心暴露与接触图统计。</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer id="app-status"></footer>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/vendor/3Dmol-min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/viewer3d.js"></script>
+<script>
+(function () {
+  const { get, post, fmt, CONST, ApiError } = window.API;
+  const App = window.App;
+
+  const el = (id) => document.getElementById(id);
+  const viewer = new window.Viewer3D.Viewer(el("viewer"));
+  let proteinType = "generic";
+  let currentCheck = null;
+  let currentStructure = null;
+  let validateTimer = null;
+
+  /* ---------------- 蛋白类型 ---------------- */
+  const TYPE_HINT = {
+    generic: "通用规则包：表面优先、避免新增游离半胱氨酸、避免在螺旋中引入脯氨酸。",
+    collagen: "胶原蛋白规则包：保护三股螺旋 Gly 位，优先推荐 Y 位羟脯氨酸与 X/Y 位链间离子作用、Y 位赖氨酸交联位点。",
+    protease: "重组蛋白酶规则包：按序列模体保护催化三联体与氧负离子洞，并按嗜热同源物偏好推荐替换。",
+    protein_a: "蛋白 A 规则包：检测串联 Ig 结合结构域，保护跨重复保守位点，优先消除 Asn 脱酰胺位点以提升耐碱性。"
+  };
+
+  function renderTypeChips() {
+    el("protein-types").innerHTML = CONST.PROTEIN_TYPES.map(
+      (type) =>
+        `<span class="chip${type.key === proteinType ? " active" : ""}" data-type="${type.key}">${type.label}</span>`
+    ).join("");
+    el("protein-types").querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        proteinType = chip.dataset.type;
+        renderTypeChips();
+        el("type-hint").textContent = TYPE_HINT[proteinType] || "";
+      });
+    });
+  }
+
+  /* ---------------- 序列校验 ---------------- */
+  function scheduleValidate() {
+    clearTimeout(validateTimer);
+    validateTimer = setTimeout(validateSequence, 320);
+  }
+
+  async function validateSequence() {
+    const raw = el("sequence").value;
+    el("seq-counter").textContent = `${fmt.sequenceLength(raw)} 字符`;
+    if (!raw.trim()) {
+      el("validate-hint").textContent = "等待输入…";
+      el("check-body").innerHTML = '<div class="text-2 text-sm">输入序列后自动显示校验结果与氨基酸组成。</div>';
+      el("alerts").innerHTML = "";
+      return;
+    }
+    try {
+      const check = await post("/sequence/validate", { sequence: raw, strict: false });
+      currentCheck = check;
+      renderCheck(check);
+    } catch (err) {
+      el("validate-hint").innerHTML = `<span class="text-danger">校验失败</span>`;
+    }
+  }
+
+  function renderCheck(check) {
+    el("validate-hint").innerHTML = check.ok
+      ? `<span class="text-ok">✓ 校验通过</span>${check.design_ready ? "" : "（含歧义残基，不可用于突变设计）"}`
+      : `<span class="text-danger">✕ ${check.errors.length} 项错误</span>`;
+
+    const alerts = [];
+    check.errors.forEach((message) => alerts.push(App.render.alert(fmt.escape(message), "danger")));
+    check.warnings.forEach((message) => alerts.push(App.render.alert(fmt.escape(message), "warn")));
+    el("alerts").innerHTML = alerts.join("");
+
+    const composition = check.composition || {};
+    const groups = [
+      { label: "疏水", keys: "AVILMFWC" },
+      { label: "极性", keys: "STNQY" },
+      { label: "正电", keys: "KRH" },
+      { label: "负电", keys: "DE" },
+      { label: "芳香", keys: "FWY" },
+      { label: "特殊", keys: "GPC" }
+    ];
+    const sum = (keys) => keys.split("").reduce((acc, key) => acc + (composition[key] || 0), 0);
+
+    el("check-body").innerHTML = `
+      ${App.render.alert(
+        `长度 <b>${check.length}</b> aa ·
+         指纹 <code>${check.sha256.slice(0, 12)}</code> ·
+         设计可用：<b>${check.design_ready ? "是" : "否"}</b>`,
+        check.design_ready ? "ok" : "warn"
+      )}
+      <div class="grid grid-3 mt-2" style="gap:8px">
+        ${groups
+          .map(
+            (group) =>
+              `<div class="stat" style="padding:10px 11px">
+                 <div class="stat-label">${group.label}</div>
+                 <div class="stat-value sm plain">${fmt.percent(sum(group.keys), 1)}</div>
+               </div>`
+          )
+          .join("")}
+      </div>
+      <div class="mt-2">
+        <div class="text-xs text-2 mb-1">氨基酸组成</div>
+        <div class="chart chart-sm" id="composition-chart"></div>
+      </div>
+      ${
+        check.ambiguous_positions && check.ambiguous_positions.length
+          ? `<div class="mt-2 text-xs text-warn">歧义残基位置（前 30 个，1-based）：${check.ambiguous_positions
+              .slice(0, 30)
+              .map((position) => position + 1)
+              .join(", ")}</div>`
+          : ""
+      }
+    `;
+
+    const entries = Object.entries(composition).sort((a, b) => b[1] - a[1]);
+    window.Charts.bar(
+      el("composition-chart"),
+      entries.map(([key]) => key),
+      entries.map(([, value]) => Number((value * 100).toFixed(2))),
+      { showLabel: false }
+    );
+  }
+
+  /* ---------------- 结构预测 ---------------- */
+  async function predict() {
+    const sequence = el("sequence").value;
+    if (!sequence.trim()) {
+      App.toast("请先输入序列", "warn");
+      return;
+    }
+    if (currentCheck && !currentCheck.ok) {
+      App.toast("序列校验未通过，请先修正错误", "danger");
+      return;
+    }
+
+    const button = el("btn-predict");
+    button.disabled = true;
+    button.textContent = "预测中…";
+    viewer.showLoading("正在提交结构预测作业…");
+    renderPdb("", null); // 先清空上一次的 PDB 内容，避免旧结果与新作业混淆
+
+    try {
+      const result = await post("/structure/predict", {
+        sequence,
+        protein_type: proteinType,
+        provider: el("provider").value || null,
+        allow_split: el("allow-split").checked,
+        use_cache: true,
+        project_id: App.currentProjectId(),
+        name: "结构分析 " + new Date().toLocaleString("zh-CN")
+      });
+
+      await App.pollAndRender(result.job_id);
+    } catch (err) {
+      viewer.hideOverlay();
+      App.renderToastError(err);
+    } finally {
+      button.disabled = false;
+      button.textContent = "预测三维结构";
+    }
+  }
+
+  App.pollAndRender = async function (jobId) {
+    try {
+      const result = await window.API.pollJob(jobId, {
+        onProgress: (job) => viewer.showLoading(`${fmt.escape(job.stage || "处理中")} · ${Math.round((job.progress || 0) * 100)}%`)
+      });
+      renderStructure(result);
+      App.toast("结构预测完成", "ok");
+    } catch (err) {
+      viewer.hideOverlay();
+      App.toastError(err);
+    }
+  };
+
+  async function renderStructure(result) {
+    currentStructure = result;
+
+    el("structure-source").innerHTML = `
+      <span class="badge primary">${fmt.escape(result.source)}</span>
+      ${result.from_cache ? '<span class="badge info">缓存命中</span>' : ""}
+      ${result.truncated ? '<span class="badge warn">已截断</span>' : ""}
+      ${result.segments && result.segments.length > 1 ? `<span class="badge warn">${result.segments.length} 片段</span>` : ""}
+    `;
+
+    // 加载 PDB 文本（单独接口，避免作业结果过大）
+    let pdbText = "";
+    if (result.structure_id) {
+      try {
+        const response = await fetch(`/api/structure/${result.structure_id}/pdb`);
+        pdbText = await response.text();
+      } catch (err) {
+        console.warn("获取 PDB 失败", err);
+      }
+    }
+
+    if (pdbText) {
+      viewer.render(pdbText, { plddt: result.plddt || [] });
+    } else {
+      viewer.render("", { plddt: result.plddt || [] });
+    }
+    // PDB 原文与 3D 视图共用同一份文本（同一个接口取回），不额外发请求
+    renderPdb(pdbText, {
+      structure_id: result.structure_id,
+      source: result.source,
+      mean_plddt: result.mean_plddt
+    });
+
+    el("viewer-tools").classList.remove("hidden");
+    el("viewer-legend").classList.remove("hidden");
+    el("viewer-legend").innerHTML = window.Viewer3D.BANDS.map(
+      (band) =>
+        `<div class="row"><span class="swatch" style="background:${band.color}"></span>${band.label}</div>`
+    ).join("");
+
+    const stats = result.stats || {};
+    const bands = stats.plddt_bands || {};
+
+    el("structure-metrics").innerHTML = `
+      <div class="panel"><div class="panel-body">
+        <div class="chart" id="plddt-gauge" style="height:190px"></div>
+      </div></div>
+      <div class="panel"><div class="panel-body">
+        <div class="row between mb-2"><span class="text-sm text-1">置信度分布</span>
+          <span class="badge ${result.mean_plddt >= 70 ? "ok" : "warn"}">
+            ${result.mean_plddt >= 70 ? "整体可信" : "置信度偏低"}</span></div>
+        ${Object.entries({
+          "极高 ≥90": bands.very_high || 0,
+          "可信 70-90": bands.confident || 0,
+          "较低 50-70": bands.low || 0,
+          "极低 <50": bands.very_low || 0
+        })
+          .map(
+            ([label, value]) => `
+          <div class="row between" style="padding:5px 0">
+            <span class="text-xs text-1">${label}</span>
+            <span class="mono text-xs">${fmt.percent(value, 1)}</span>
+          </div>
+          <div class="progress" style="height:4px"><i style="width:${(value * 100).toFixed(1)}%"></i></div>`
+          )
+          .join("")}
+      </div></div>
+    `;
+
+    window.Charts.gauge(el("plddt-gauge"), result.mean_plddt || 0);
+
+    const composition = stats.secondary_structure_composition || {};
+    const exposure = stats.hydrophobic_exposure || {};
+
+    el("structure-elapsed").textContent = stats.elapsed_seconds ? `耗时 ${fmt.duration(stats.elapsed_seconds)}` : "—";
+
+    el("structure-stats").innerHTML = `
+      ${(result.warnings || [])
+        .map((warning) => App.render.alert(fmt.escape(warning), "warn"))
+        .join("")}
+      ${result.degradation_reason ? App.render.alert(fmt.escape(result.degradation_reason), "warn") : ""}
+      <div class="grid grid-2" style="gap:12px">
+        <div>
+          <div class="text-xs text-2 mb-1">二级结构组成（DSSP-lite）</div>
+          <div class="chart chart-sm" id="ss-chart"></div>
+        </div>
+        <div>
+          <div class="text-xs text-2 mb-1">结构指标</div>
+          <div class="row between" style="padding:6px 0;border-bottom:1px solid var(--hairline)">
+            <span class="text-xs text-1">回旋半径</span>
+            <span class="mono text-xs">${fmt.num(stats.radius_of_gyration, 2)} Å</span></div>
+          <div class="row between" style="padding:6px 0;border-bottom:1px solid var(--hairline)">
+            <span class="text-xs text-1">平均相对 SASA</span>
+            <span class="mono text-xs">${fmt.num(stats.mean_relative_sasa, 4)}</span></div>
+          <div class="row between" style="padding:6px 0;border-bottom:1px solid var(--hairline)">
+            <span class="text-xs text-1">疏水核心暴露</span>
+            <span class="mono text-xs ${exposure.exposed_ratio > 0.3 ? "text-warn" : ""}">
+              ${fmt.percent(exposure.exposed_ratio, 1)}（${exposure.exposed_count || 0}/${(exposure.exposed_count || 0) + (exposure.buried_count || 0)}）</span></div>
+          <div class="row between" style="padding:6px 0">
+            <span class="text-xs text-1">柔性区域占比</span>
+            <span class="mono text-xs">${fmt.percent(stats.flexible_region_ratio, 1)}</span></div>
+          ${
+            result.segments && result.segments.length > 1
+              ? `<div class="text-xs text-warn mt-2">分片预测：${result.segments
+                  .map((segment) => `${segment[0] + 1}-${segment[1]}`)
+                  .join("、")}<br/>片段之间的相对取向未经建模。</div>`
+              : ""
+          }
+        </div>
+      </div>
+      ${
+        stats.algorithms
+          ? `<details class="acc mt-2"><summary>算法来源</summary><div class="acc-body">
+              ${Object.entries(stats.algorithms)
+                .map(([key, value]) => `<div><b>${fmt.escape(key)}</b>：${fmt.escape(value)}</div>`)
+                .join("")}
+             </div></details>`
+          : ""
+      }
+    `;
+
+    window.Charts.bar(
+      el("ss-chart"),
+      ["α-螺旋", "3-10", "π-螺旋", "β-折叠", "无规卷曲"],
+      [
+        (composition.helix || 0) * 100,
+        (composition.helix_310 || 0) * 100,
+        (composition.helix_pi || 0) * 100,
+        (composition.sheet || 0) * 100,
+        (composition.coil || 0) * 100
+      ],
+      { showLabel: true, colors: ["#00e0b8", "#22d3ee", "#7c5cff", "#38bdf8", "#5c6b82"] }
+    );
+  }
+
+  /* ---------------- 事件绑定 ---------------- */
+  el("sequence").addEventListener("input", scheduleValidate);
+
+  // 拖拽 FASTA
+  const textarea = el("sequence");
+  textarea.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    textarea.style.borderColor = "var(--primary)";
+  });
+  textarea.addEventListener("dragleave", () => (textarea.style.borderColor = ""));
+  textarea.addEventListener("drop", async (event) => {
+    event.preventDefault();
+    textarea.style.borderColor = "";
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    await loadFile(file);
+  });
+
+  /* ---------------- PDB 文件内容查看器 ---------------- */
+  //: 单次最多渲染的行数。COL1A1 这类长序列分片折叠后 PDB 有 1 万多行，
+  //: 全量铺进 DOM 会明显拖慢渲染；超出则截断展示（文件本身仍可完整下载）。
+  const PDB_LINE_CAP = 20000;
+
+  //: PDB 记录类型 -> 着色 class
+  const PDB_RECORD_CLASS = {
+    ATOM: "is-atom",
+    HETATM: "is-hetatm",
+    TER: "is-ter",
+    END: "is-end",
+    HEADER: "is-header",
+    TITLE: "is-title",
+    COMPND: "is-compnd",
+    REMARK: "is-remark",
+    SEQRES: "is-seqres"
+  };
+
+  let pdbRawText = "";
+
+  function renderPdb(pdbText, meta) {
+    const code = el("pdb-code");
+    const gutter = el("pdb-gutter");
+    const download = el("btn-pdb-download");
+    pdbRawText = pdbText || "";
+
+    const hasData = Boolean(pdbText);
+    el("btn-pdb-copy").disabled = !hasData;
+    el("btn-pdb-size").disabled = !hasData;
+    if (hasData && meta && meta.structure_id) {
+      download.href = `/api/structure/${meta.structure_id}/pdb`;
+      download.setAttribute("download", `structure_${meta.structure_id}.pdb`);
+      download.removeAttribute("aria-disabled");
+    } else {
+      download.removeAttribute("href");
+      download.setAttribute("aria-disabled", "true");
+    }
+
+    if (!hasData) {
+      code.innerHTML =
+        '<div class="pdb-empty">尚未生成结构。<br/>点击「预测三维结构」后，这里会显示 PDB 文件的完整内容' +
+        "（原子坐标、二级结构记录与注释行）。</div>";
+      gutter.textContent = "";
+      el("pdb-meta").innerHTML = "";
+      el("pdb-sub").textContent = "尚未生成";
+      return;
+    }
+
+    const lines = pdbText.replace(/\r\n?/g, "\n").split("\n");
+    if (lines.length && lines[lines.length - 1] === "") lines.pop(); // 末尾换行不算一行
+    const shown = lines.slice(0, PDB_LINE_CAP);
+    const hidden = lines.length - shown.length;
+
+    const counts = {};
+    code.innerHTML = shown
+      .map((line) => {
+        const record = line.slice(0, 6).trim().toUpperCase();
+        counts[record] = (counts[record] || 0) + 1;
+        const cls = PDB_RECORD_CLASS[record] || "";
+        return `<span class="pdb-line ${cls}">${fmt.escape(line)}</span>`;
+      })
+      .join("");
+    if (hidden > 0) {
+      code.innerHTML +=
+        `<span class="pdb-line is-truncated">… 文件过大，仅显示前 ${PDB_LINE_CAP.toLocaleString("zh-CN")} 行，` +
+        `其余 ${hidden.toLocaleString("zh-CN")} 行请下载后查看</span>`;
+    }
+
+    // 行号：与内容区行数严格一致（含截断提示那一行）
+    const numbers = shown.map((_, index) => index + 1);
+    if (hidden > 0) numbers.push("");
+    gutter.textContent = numbers.join("\n");
+
+    // 元信息条
+    const sizeKb = (new Blob([pdbText]).size / 1024).toFixed(1);
+    const residues = new Set(
+      shown.filter((line) => line.startsWith("ATOM")).map((line) => line.slice(21, 27))
+    ).size;
+    const atoms = counts.ATOM || 0;
+    const hetatm = counts.HETATM || 0;
+    const parts = [
+      ["总行数", lines.length.toLocaleString("zh-CN")],
+      ["ATOM", atoms.toLocaleString("zh-CN")]
+    ];
+    if (hetatm) parts.push(["HETATM", hetatm.toLocaleString("zh-CN")]);
+    parts.push(["残基位置", residues.toLocaleString("zh-CN")]);
+    parts.push(["文件大小", `${sizeKb} KB`]);
+    if (meta && meta.source) parts.push(["来源", meta.source]);
+    if (meta && meta.mean_plddt !== undefined && meta.mean_plddt !== null) {
+      parts.push(["平均 pLDDT", Number(meta.mean_plddt).toFixed(2)]);
+    }
+    el("pdb-meta").innerHTML = parts
+      .map(([key, value]) => `<span><span class="k">${key}</span> <span class="v">${value}</span></span>`)
+      .join("");
+
+    el("pdb-sub").textContent = `${lines.length.toLocaleString("zh-CN")} 行 · ${sizeKb} KB`;
+    code.scrollTop = 0;
+    gutter.scrollTop = 0;
+  }
+
+  function bindPdbTools() {
+    const code = el("pdb-code");
+    const gutter = el("pdb-gutter");
+
+    // 行号跟随内容区纵向滚动；gutter 自身 overflow:hidden，故横向不跟着动，
+    // 保证用户横向滚到第 60 列以后时行号仍然可见。
+    code.addEventListener("scroll", () => {
+      gutter.scrollTop = code.scrollTop;
+    });
+
+    el("btn-pdb-size").addEventListener("click", () => {
+      const wide = el("pdb-shell").classList.toggle("is-wide");
+      el("btn-pdb-size").textContent = wide ? "缩小" : "放大";
+    });
+
+    el("btn-pdb-copy").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(pdbRawText);
+        App.toast("PDB 内容已复制到剪贴板", "ok");
+      } catch (err) {
+        App.toast("复制失败，请改用「下载 PDB」", "warn");
+      }
+    });
+  }
+
+  el("btn-upload").addEventListener("click", () => el("file-input").click());
+  el("file-input").addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (file) await loadFile(file);
+  });
+
+  /**
+   * 上传 FASTA。该接口返回的是纯文本（PlainTextResponse），因此直接用 fetch，
+   * 不走 API 封装里的 JSON 解析路径，避免把序列正文当成 JSON 解析失败。
+   */
+  async function loadFile(file) {
+    if (file.size > 20 * 1024 * 1024) {
+      App.toast(`文件 ${file.name} 超过 20 MB 上限`, "warn");
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await fetch("/api/sequence/upload", { method: "POST", body: formData });
+      if (!response.ok) {
+        let message = `HTTP ${response.status}`;
+        try {
+          const payload = await response.json();
+          message = payload.message || message;
+        } catch (_) {}
+        throw new Error(message);
+      }
+      el("sequence").value = await response.text();
+      App.toast(`已载入 ${file.name}`, "ok");
+      validateSequence();
+    } catch (err) {
+      App.toast("文件载入失败：" + err.message, "danger");
+    }
+  }
+
+  el("btn-sample").addEventListener("click", () => {
+    el("sequence").value = CONST.SAMPLE_SEQUENCE;
+    validateSequence();
+    App.toast("已载入示例序列（65 aa 螺旋束）", "info");
+  });
+
+  el("btn-predict").addEventListener("click", predict);
+
+  el("btn-save").addEventListener("click", async () => {
+    if (!currentCheck || !currentCheck.ok) {
+      App.toast("请先输入合法序列", "warn");
+      return;
+    }
+    const projectId = App.currentProjectId();
+    if (!projectId) {
+      App.toast("请先选择项目", "warn");
+      return;
+    }
+    try {
+      await post("/sequences", {
+        project_id: projectId,
+        name: "序列 " + new Date().toLocaleString("zh-CN"),
+        sequence: currentCheck.sequence,
+        protein_type: proteinType,
+        note: "由序列与结构页保存"
+      });
+      App.toast("已保存到项目", "ok");
+      await App.loadProjects();
+    } catch (err) {
+      App.toastError(err);
+    }
+  });
+
+  document.querySelectorAll(".viewer-tool[data-style]").forEach((tool) => {
+    tool.addEventListener("click", () => {
+      document.querySelectorAll(".viewer-tool[data-style]").forEach((item) => item.classList.remove("active"));
+      tool.classList.add("active");
+      viewer.setStyle(tool.dataset.style);
+    });
+  });
+  el("tool-spin").addEventListener("click", () => {
+    const spinning = viewer.toggleSpin();
+    el("tool-spin").classList.toggle("active", spinning);
+  });
+  el("tool-reset").addEventListener("click", () => viewer.resetView());
+
+  window.addEventListener("resize", () => window.Charts.resizeAll());
+
+  (async function main() {
+    await App.init("structure");
+    renderTypeChips();
+    bindPdbTools();
+    renderPdb("", null);
+    el("type-hint").textContent = TYPE_HINT.generic;
+
+    const params = new URLSearchParams(location.search);
+    const sequenceId = params.get("sequence_id");
+    if (sequenceId) {
+      try {
+        const record = await get(`/sequences/${sequenceId}`);
+        el("sequence").value = record.sequence;
+        proteinType = record.protein_type || "generic";
+        renderTypeChips();
+        el("type-hint").textContent = TYPE_HINT[proteinType] || "";
+        validateSequence();
+      } catch (err) {
+        App.toastError(err);
+      }
+    }
+  })();
+})();
+</script>
+</body>
+</html>

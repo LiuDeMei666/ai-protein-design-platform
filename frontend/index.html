@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作台 · AI 辅助蛋白设计平台</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="app">
+  <header id="app-nav"></header>
+
+  <main class="app-main">
+    <div class="page-head">
+      <div>
+        <div class="page-title">工作台</div>
+        <div class="page-desc">
+          从序列输入到实验验证的完整闭环：提交目标蛋白序列，获得三维结构、关键理化性质与可解释的突变改造方案；
+          实验数据回录后平台会自动评估预测可靠性并支持模型增量迭代。
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn btn-sm" id="btn-refresh">刷新数据</button>
+        <a class="btn btn-primary" href="structure.html">开始分析 →</a>
+      </div>
+    </div>
+
+    <!-- 概览指标 -->
+    <div class="grid grid-6" id="overview"></div>
+
+    <div class="grid grid-main-aside mt-3">
+      <!-- 作业队列 -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>作业队列
+            <span class="panel-sub" id="queue-sub">—</span>
+          </div>
+          <div class="row">
+            <label class="switch">
+              <input type="checkbox" id="auto-refresh" checked>
+              <span class="track"></span><span>自动刷新</span>
+            </label>
+          </div>
+        </div>
+        <div class="panel-body" id="jobs-body">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line" style="width:78%"></div>
+          <div class="skeleton skeleton-line" style="width:64%"></div>
+        </div>
+      </section>
+
+      <!-- 平台状态 -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>平台状态</div>
+          <a class="btn btn-sm btn-ghost" href="/docs" target="_blank" rel="noopener">接口文档</a>
+        </div>
+        <div class="panel-body" id="status-body">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line" style="width:72%"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid grid-2 mt-3">
+      <!-- 快捷入口 -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>分析流程</div>
+        </div>
+        <div class="panel-body" id="flow-body"></div>
+      </section>
+
+      <!-- 最近活动 -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>最近活动</div>
+          <span class="panel-sub" id="activity-sub">—</span>
+        </div>
+        <div class="panel-body" id="activity-body">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line" style="width:80%"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 已保存的分析结果 -->
+    <section class="panel mt-3">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>已保存的分析结果</div>
+        <div class="row">
+          <div class="chips" id="result-filter">
+            <span class="chip active" data-kind="design">突变设计</span>
+            <span class="chip" data-kind="property">性质预测</span>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body flush">
+        <div class="table-wrap" id="results-body"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="app-status"></footer>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script>
+(function () {
+  const { get, fmt, CONST } = window.API;
+  const App = window.App;
+
+  const FLOW = [
+    { href: "structure.html", step: "01", title: "序列与结构", desc: "输入序列、校验清洗、预测三维结构并按 pLDDT 着色查看" },
+    { href: "property.html", step: "02", title: "性质报告", desc: "9 项理化性质评分、风险位点轨道图与逐项算法依据" },
+    { href: "design.html", step: "03", title: "突变设计", desc: "单点/组合/局部优化，五维可解释评分与候选导出" },
+    { href: "experiment.html", step: "04", title: "实验与迭代", desc: "实测数据导入、预测实测对比、属性头增量训练" }
+  ];
+
+  let resultKind = "design";
+
+  async function loadOverview() {
+    const host = document.getElementById("overview");
+    try {
+      const data = await get("/dashboard", { project_id: App.currentProjectId() || undefined });
+      host.innerHTML = [
+        App.render.stat("项目", fmt.int(data.project_count), { foot: "研发项目数" }),
+        App.render.stat("已分析序列", fmt.int(data.sequence_count), { foot: "去重后的目标蛋白" }),
+        App.render.stat("设计批次", fmt.int(data.design_run_count), { foot: "历史突变设计" }),
+        App.render.stat("突变候选", fmt.int(data.mutation_count), { foot: "累计入库候选" }),
+        App.render.stat("实验记录", fmt.int(data.experiment_count), {
+          foot: data.experiment_count > 0 ? "可用于模型迭代" : "暂无实测数据",
+          plain: data.experiment_count === 0
+        }),
+        App.render.stat("模型版本", fmt.int(data.model_version_count), {
+          foot: `已激活 ${data.active_models} 个`,
+          plain: data.model_version_count === 0
+        })
+      ].join("");
+    } catch (err) {
+      host.innerHTML = App.render.alert("加载概览失败：" + fmt.escape(err.message), "danger");
+    }
+  }
+
+  async function loadJobs() {
+    const host = document.getElementById("jobs-body");
+    const sub = document.getElementById("queue-sub");
+    try {
+      const active = await get("/jobs", { active_only: true, limit: 12 });
+      const recent = await get("/jobs", { limit: 12 });
+      const queue = await get("/jobs/queue");
+
+      sub.textContent = `${queue.active_jobs} 运行中 · ${queue.workers} 并发 · 重计算${queue.serialize_heavy_jobs ? "串行" : "并行"}`;
+
+      const items = [];
+      if (active.items.length) {
+        items.push(`<div class="text-xs text-2 mb-1">进行中</div>`);
+        items.push(active.items.map(App.render.jobRow).join(""));
+      }
+      const finished = recent.items.filter((job) => ["success", "failed", "cancelled"].includes(job.status));
+      if (finished.length) {
+        items.push(`<div class="text-xs text-2 mb-1 mt-2">最近完成</div>`);
+        items.push(finished.slice(0, 8).map(App.render.jobRow).join(""));
+      }
+      host.innerHTML = items.length ? items.join("") : App.render.empty("暂无作业记录", "在任一页面提交分析任务后会显示在这里");
+    } catch (err) {
+      host.innerHTML = App.render.alert("加载作业队列失败：" + fmt.escape(err.message), "danger");
+    }
+  }
+
+  async function loadStatus() {
+    const host = document.getElementById("status-body");
+    try {
+      const health = await get("/health");
+      const providers = (health.structure && health.structure.providers) || {};
+      const rows = Object.values(providers).map((provider) => {
+        const ok = provider.available;
+        return `<div class="row between" style="padding:7px 0;border-bottom:1px solid var(--hairline)">
+          <div>
+            <div style="font-size:12.5px">${fmt.escape(provider.name)}</div>
+            <div class="text-xs text-2">${fmt.escape(provider.note || provider.model_version || "")}</div>
+            ${provider.reason ? `<div class="text-xs text-warn">${fmt.escape(provider.reason)}</div>` : ""}
+          </div>
+          <span class="badge ${ok ? "ok" : "danger"}">${ok ? "可用" : "不可用"}</span>
+        </div>`;
+      });
+
+      const embedding = health.embedding || {};
+      const gpu = health.torch || {};
+      const storage = health.storage || {};
+
+      host.innerHTML = `
+        ${App.render.alert(
+          health.healthy
+            ? "核心依赖正常：数据库可写、至少一个结构预测通道可用。"
+            : "平台处于降级状态：请检查结构预测通道与网络连通性。",
+          health.healthy ? "ok" : "warn"
+        )}
+        <div class="text-xs text-2 mt-2 mb-1">结构预测通道</div>
+        ${rows.join("")}
+        <div class="text-xs text-2 mt-2 mb-1">蛋白语言模型</div>
+        <div class="row between" style="padding:6px 0">
+          <div>
+            <div style="font-size:12.5px">${fmt.escape(embedding.model || "—")}</div>
+            <div class="text-xs text-2">
+              设备 ${fmt.escape(embedding.resolved_device || "—")} ·
+              fp16 ${embedding.use_fp16 ? "开" : "关"} ·
+              权重${embedding.main_model_cached ? "已就绪" : "未下载"}
+            </div>
+          </div>
+          <span class="badge ${embedding.main_model_cached ? "ok" : "warn"}">
+            ${embedding.main_model_cached ? (embedding.loaded ? "已加载" : "待加载") : "需下载"}
+          </span>
+        </div>
+        <div class="text-xs text-2 mt-2 mb-1">运行环境</div>
+        <div class="row wrap" style="gap:8px">
+          <span class="badge mono">GPU ${gpu.device_count || 0}×</span>
+          <span class="badge mono">${fmt.escape((gpu.devices || ["无 CUDA"])[0])}</span>
+          <span class="badge mono">缓存 ${fmt.num(storage.cache_size_mb, 0)} MB</span>
+          <span class="badge mono">Python ${fmt.escape((health.runtime || {}).python || "")}</span>
+        </div>
+      `;
+    } catch (err) {
+      host.innerHTML = App.render.alert(
+        "无法连接后端服务：请确认已执行 <code>bash run_server.sh</code>。" + fmt.escape(err.message),
+        "danger"
+      );
+    }
+  }
+
+  function loadFlow() {
+    document.getElementById("flow-body").innerHTML = FLOW.map(
+      (item, index) => `
+      <a href="${item.href}" class="row" style="padding:12px;border-radius:10px;border:1px solid var(--hairline);
+         margin-bottom:8px;text-decoration:none;transition:all .22s cubic-bezier(.22,.61,.36,1)"
+         onmouseover="this.style.borderColor='var(--glass-border-hover)';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.borderColor='var(--hairline)';this.style.transform='none'">
+        <span class="mono text-primary" style="font-size:15px;opacity:.75">${item.step}</span>
+        <span>
+          <div style="font-size:13px;color:var(--text-0)">${item.title}</div>
+          <div class="text-xs text-2">${item.desc}</div>
+        </span>
+        <span class="spacer"></span>
+        <span class="text-primary">→</span>
+      </a>`
+    ).join("");
+  }
+
+  async function loadActivity() {
+    const host = document.getElementById("activity-body");
+    const sub = document.getElementById("activity-sub");
+    try {
+      const jobs = await get("/jobs", { limit: 10 });
+      if (!jobs.items.length) {
+        host.innerHTML = App.render.empty("暂无活动记录");
+        return;
+      }
+      sub.textContent = `最近 ${jobs.items.length} 条`;
+      host.innerHTML = `<div class="timeline">${jobs.items
+        .map(
+          (job) => `
+        <div class="timeline-item ${job.status === "failed" ? "failed" : ""}">
+          <div class="timeline-time">${fmt.relativeTime(job.created_at)}</div>
+          <div class="timeline-title">${fmt.escape(job.title || job.kind)}</div>
+          <div class="timeline-desc">
+            ${fmt.escape(CONST.JOB_KIND_LABEL[job.kind] || job.kind)} ·
+            ${
+              job.status === "success"
+                ? `<span class="text-ok">成功</span>`
+                : job.status === "failed"
+                ? `<span class="text-danger">失败</span>`
+                : job.status === "cancelled"
+                ? "已取消"
+                : `${Math.round((job.progress || 0) * 100)}% ${fmt.escape(job.stage || "")}`
+            }
+          </div>
+        </div>`
+        )
+        .join("")}</div>`;
+    } catch (err) {
+      host.innerHTML = App.render.alert(fmt.escape(err.message), "danger");
+    }
+  }
+
+  async function loadResults() {
+    const host = document.getElementById("results-body");
+    try {
+      if (resultKind === "design") {
+        const page = await get("/design/runs", { limit: 20 });
+        if (!page.items.length) {
+          host.innerHTML = App.render.empty("暂无设计批次", "在突变设计页提交任务后，结果会自动落库");
+          return;
+        }
+        host.innerHTML = `<table class="data">
+          <thead><tr>
+            <th>批次</th><th>目标序列</th><th>类型</th><th>模式</th>
+            <th class="mono">候选数</th><th class="mono">最高分</th><th>创建时间</th><th></th>
+          </tr></thead>
+          <tbody>${page.items
+            .map((run) => {
+              const summary = run.summary || {};
+              return `<tr onclick="location.href='design.html?run_id=${run.id}'">
+                <td class="mono">#${run.id}</td>
+                <td>${fmt.escape(run.sequence_name || "—")}
+                  <span class="text-3 text-xs">(${run.sequence_length || "?"} aa)</span></td>
+                <td><span class="badge primary">${fmt.escape(run.category)}</span></td>
+                <td>${fmt.escape(run.mode)}</td>
+                <td class="num">${fmt.int(summary.candidate_count)}</td>
+                <td class="num text-primary">${fmt.num(summary.score_max, 2)}</td>
+                <td class="text-2 text-xs">${fmt.datetime(run.created_at)}</td>
+                <td class="text-primary">→</td>
+              </tr>`;
+            })
+            .join("")}</tbody></table>`;
+      } else {
+        const page = await get("/property/runs", { limit: 20 });
+        if (!page.items.length) {
+          host.innerHTML = App.render.empty("暂无性质预测记录", "在性质报告页提交任务后，结果会自动落库");
+          return;
+        }
+        host.innerHTML = `<table class="data">
+          <thead><tr>
+            <th>记录</th><th>目标序列</th><th>宿主</th>
+            <th class="mono">综合分</th><th>风险分布</th><th>创建时间</th><th></th>
+          </tr></thead>
+          <tbody>${page.items
+            .map((run) => {
+              const counts = run.risk_counts || {};
+              return `<tr onclick="location.href='property.html?run_id=${run.id}'">
+                <td class="mono">#${run.id}</td>
+                <td>${fmt.escape(run.sequence_name || "—")}
+                  <span class="text-3 text-xs">(${run.sequence_length || "?"} aa)</span></td>
+                <td><span class="badge">${fmt.escape(run.host_system)}</span></td>
+                <td class="num text-primary">${fmt.num(run.overall_score, 1)}</td>
+                <td>
+                  <span class="badge ok">低 ${counts.low || 0}</span>
+                  <span class="badge warn">中 ${counts.medium || 0}</span>
+                  <span class="badge danger">高 ${counts.high || 0}</span>
+                </td>
+                <td class="text-2 text-xs">${fmt.datetime(run.created_at)}</td>
+                <td class="text-primary">→</td>
+              </tr>`;
+            })
+            .join("")}</tbody></table>`;
+      }
+    } catch (err) {
+      host.innerHTML = App.render.alert("加载失败：" + fmt.escape(err.message), "danger");
+    }
+  }
+
+  async function refreshAll() {
+    await Promise.all([loadOverview(), loadJobs(), loadStatus(), loadActivity(), loadResults()]);
+  }
+
+  document.getElementById("btn-refresh").addEventListener("click", async () => {
+    App.toast("正在刷新…", "info", 1500);
+    await App.refreshStatus();
+    await refreshAll();
+  });
+
+  document.querySelectorAll("#result-filter .chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll("#result-filter .chip").forEach((item) => item.classList.remove("active"));
+      chip.classList.add("active");
+      resultKind = chip.dataset.kind;
+      loadResults();
+    });
+  });
+
+  document.getElementById("auto-refresh").addEventListener("change", (event) => {
+    if (event.target.checked) startAutoRefresh();
+    else stopAutoRefresh();
+  });
+
+  let timer = null;
+  function startAutoRefresh() {
+    stopAutoRefresh();
+    timer = setInterval(() => {
+      loadJobs();
+      loadActivity();
+    }, 5000);
+  }
+  function stopAutoRefresh() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  document.addEventListener("project-changed", refreshAll);
+
+  (async function main() {
+    await App.init("index");
+    await refreshAll();
+    startAutoRefresh();
+  })();
+})();
+</script>
+</body>
+</html>

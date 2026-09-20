@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验与迭代 · AI 辅助蛋白设计平台</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="app">
+  <header id="app-nav"></header>
+
+  <main class="app-main">
+    <div class="page-head">
+      <div>
+        <div class="page-title">实验数据回流与模型迭代</div>
+        <div class="page-desc">
+          把实测的突变体性质批量录入平台，与设计预测做对比分析（秩相关、校准后误差、逐条偏差诊断），
+          并在数据积累后对属性预测模型做增量训练。这是"计算-实验"闭环的收口环节。
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn btn-sm" href="/api/experiment/template.xlsx">下载 Excel 模板</a>
+        <a class="btn btn-sm" href="/api/experiment/template.csv">下载 CSV 模板</a>
+      </div>
+    </div>
+
+    <div id="alerts"></div>
+
+    <!-- 数据导入 -->
+    <div class="grid grid-main-aside">
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>实验数据导入</div>
+          <span class="panel-sub" id="import-sub">支持 CSV / Excel（.xlsx）</span>
+        </div>
+        <div class="panel-body">
+          <div class="row wrap mb-2" style="gap:12px">
+            <input type="file" id="file-input" accept=".csv,.xlsx,.xlsm,.txt" style="display:none">
+            <button class="btn btn-primary" id="btn-choose">选择文件</button>
+            <label class="switch">
+              <input type="checkbox" id="dry-run" checked>
+              <span class="track"></span><span>仅校验（预演，不写库）</span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="dedup" checked>
+              <span class="track"></span><span>自动去重</span>
+            </label>
+          </div>
+
+          <div class="row wrap mb-1" style="gap:10px">
+            <span class="text-xs text-2" style="white-space:nowrap">关联序列</span>
+            <select class="select" id="import-sequence" style="flex:1;min-width:240px">
+              <option value="">（按文件内「序列/样品名称」自动匹配）</option>
+            </select>
+          </div>
+          <div class="field-hint mb-2">
+            选中的序列会写入每条记录 —— 这是「预测-实测对比」的前置条件，缺少序列关联的记录无法参与对比。
+            留空则按文件里的「序列/样品名称」列自动匹配（需与项目内序列名完全一致）。
+          </div>
+
+          <div id="drop-zone" style="border:1px dashed var(--glass-border);border-radius:12px;
+               padding:26px;text-align:center;color:var(--text-2);font-size:12.5px;transition:all .2s">
+            把 CSV / Excel 文件拖到这里，或点击上方按钮选择
+          </div>
+
+          <div id="import-result" class="mt-2"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>录入模板列定义</div>
+        </div>
+        <div class="panel-body" id="template-body">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line" style="width:76%"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 对比分析 -->
+    <section class="panel mt-3">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>预测 - 实测对比分析</div>
+        <div class="row" style="gap:8px">
+          <select class="select" id="compare-sequence" style="width:auto;min-width:200px"></select>
+          <label class="switch nowrap">
+            <input type="checkbox" id="compare-esm">
+            <span class="track"></span><span>ESM-2 精算</span>
+          </label>
+          <button class="btn btn-sm btn-primary" id="btn-compare">开始对比</button>
+        </div>
+      </div>
+      <div class="panel-body" id="compare-body">
+        <div class="empty">
+          <div class="big">◇</div>
+          <div>选择序列并点击「开始对比」，平台会为每个突变体重算预测值并与实测值配对</div>
+          <div class="text-xs mt-1">
+            平台指标是 0-100 评分，实测值有各自量纲，因此以 <b>Spearman 秩相关</b> 为主指标
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 实验记录 -->
+    <section class="panel mt-3">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>实验记录</div>
+        <div class="row" style="gap:8px">
+          <select class="select" id="record-property" style="width:auto;min-width:150px">
+            <option value="">全部属性</option>
+          </select>
+          <button class="btn btn-sm" id="btn-refresh-records">刷新</button>
+        </div>
+      </div>
+      <div class="panel-body flush">
+        <div class="table-wrap" style="max-height:420px" id="records-table"></div>
+      </div>
+    </section>
+
+    <!-- 模型版本 -->
+    <div class="grid grid-main-aside mt-3">
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>模型版本</div>
+          <span class="panel-sub" id="version-sub">—</span>
+        </div>
+        <div class="panel-body flush">
+          <div class="table-wrap" style="max-height:420px" id="version-table"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>训练与迭代</div>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <div class="field-label"><span>目标属性</span></div>
+            <select class="select" id="train-property"></select>
+            <div class="field-hint" id="train-hint">
+              平台在 ESM-2 序列嵌入上训练轻量属性头（Ridge），支持真正的增量训练。
+            </div>
+          </div>
+          <div class="grid grid-2" style="gap:10px">
+            <div class="field mb-0">
+              <div class="field-label"><span>算法</span></div>
+              <select class="select" id="train-algo">
+                <option value="ridge">Ridge（支持增量）</option>
+                <option value="hgb">梯度提升（仅全量）</option>
+              </select>
+            </div>
+            <div class="field mb-0">
+              <div class="field-label"><span>最小样本数</span></div>
+              <input class="input" type="number" id="train-min" value="8" min="2">
+            </div>
+          </div>
+          <div class="row mt-2" style="gap:8px">
+            <button class="btn btn-primary" id="btn-train">全量训练</button>
+            <button class="btn" id="btn-incremental">增量训练</button>
+          </div>
+          <div id="train-result" class="mt-2"></div>
+
+          <div class="divider"></div>
+          <div class="text-xs text-2" style="line-height:1.75">
+            <b>方法说明</b><br/>
+            · Ridge 用充分统计量累积，增量训练结果与全量重训<b>等价</b>；<br/>
+            · 样本量 &lt; 15 时不划分留出集，只报告交叉验证指标（留出集在当时波动极大）；<br/>
+            · 每次训练生成新版本并自动激活，历史版本保留可回滚。
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="app-status"></footer>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/experiment.js"></script>
+<script>
+(function () {
+  (async function main() {
+    await window.App.init("experiment");
+    await window.Experiment.init();
+  })();
+})();
+</script>
+</body>
+</html>

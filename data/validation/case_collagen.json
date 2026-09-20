@@ -1,0 +1,2665 @@
+{
+  "case": "collagen",
+  "target": "sp|P02452|CO1A1_HUMAN Collagen alpha-1(I) chain OS=Homo sapiens OX=9606 GN=COL1A1 PE=1 SV=6",
+  "sequence_length": 1464,
+  "mode": "single",
+  "sequence_check": {
+    "ok": true,
+    "length": 1464,
+    "warnings": [],
+    "errors": []
+  },
+  "collagen_periodicity": {
+    "phase_counts": {
+      "0": 363,
+      "1": 363,
+      "2": 363,
+      "none": 375
+    },
+    "repeat_density": 0.8125,
+    "native_hyp_sites": 125,
+    "native_crosslink_sites": 25
+  },
+  "rulepack": {
+    "protected_count": 522,
+    "gly_total": 391,
+    "protection_rate": 1.335
+  },
+  "design": {
+    "mode": "single",
+    "position_count": 941,
+    "candidate_count": 17879,
+    "protected_count": 522,
+    "exclusion_count": 523,
+    "downsampled": false,
+    "elapsed_seconds": 65.82,
+    "summary": {
+      "candidate_count": 17879,
+      "combination_count": 0,
+      "score_max": 76.0,
+      "score_mean": 37.68,
+      "score_median": 34.67,
+      "flagged_count": 6726,
+      "top_candidate": {
+        "mutations": [
+          "M181P"
+        ],
+        "total_score": 76.0,
+        "rationale": "单点突变 M181P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。"
+      },
+      "elapsed_seconds": 65.8,
+      "evaluated_candidates": 17879
+    }
+  },
+  "top_candidates": [
+    {
+      "mutations": [
+        "M181P"
+      ],
+      "positions": [
+        181
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=4.38（M->P）：模型认可该替换；该位点野生型掩码对数概率 -4.60"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=4.38）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 M181P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 4.381,
+        "wt_logprob": -4.604,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -50.2,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "M181P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 1
+      }
+    },
+    {
+      "mutations": [
+        "M181R"
+      ],
+      "positions": [
+        181
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.62（M->R）：模型认可该替换；该位点野生型掩码对数概率 -4.60"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.62）；不符合该蛋白类型的活性改造偏好。Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 M181R：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.619,
+        "wt_logprob": -4.604,
+        "rulepack_note": "Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 10.5,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "M181R",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 2
+      }
+    },
+    {
+      "mutations": [
+        "S184P"
+      ],
+      "positions": [
+        184
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=4.59（S->P）：模型认可该替换；该位点野生型掩码对数概率 -5.01"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=4.59）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 S184P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 4.587,
+        "wt_logprob": -5.012,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 23.7,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "S184P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 3
+      }
+    },
+    {
+      "mutations": [
+        "L189P"
+      ],
+      "positions": [
+        189
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.50（L->P）：模型认可该替换；该位点野生型掩码对数概率 -1.92"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.50）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 L189P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.504,
+        "wt_logprob": -1.919,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -54.0,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "L189P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 4
+      }
+    },
+    {
+      "mutations": [
+        "A195P"
+      ],
+      "positions": [
+        195
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=2.64（A->P）：模型认可该替换；该位点野生型掩码对数概率 -2.84"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=2.64）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 A195P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 2.645,
+        "wt_logprob": -2.843,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 24.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": true,
+          "label": "A195P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": true,
+        "charge_change": 0.0,
+        "rank": 5
+      }
+    },
+    {
+      "mutations": [
+        "Q199P"
+      ],
+      "positions": [
+        199
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.50（Q->P）：模型认可该替换；该位点野生型掩码对数概率 -1.89"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.50）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 Q199P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 0.502,
+        "wt_logprob": -1.887,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -31.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "Q199P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 6
+      }
+    },
+    {
+      "mutations": [
+        "Q199R"
+      ],
+      "positions": [
+        199
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.06（Q->R）：模型认可该替换；该位点野生型掩码对数概率 -1.89"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.06）；不符合该蛋白类型的活性改造偏好。Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 Q199R：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.059,
+        "wt_logprob": -1.887,
+        "rulepack_note": "Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 29.6,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "Q199R",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 7
+      }
+    },
+    {
+      "mutations": [
+        "F201L"
+      ],
+      "positions": [
+        201
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.01（F->L）：模型认可该替换；该位点野生型掩码对数概率 -1.59"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.01）；不符合该蛋白类型的活性改造偏好。X 位替换为 L，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 F201L：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.014,
+        "wt_logprob": -1.591,
+        "rulepack_note": "X 位替换为 L，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -23.2,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "F201L",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 8
+      }
+    },
+    {
+      "mutations": [
+        "F201P"
+      ],
+      "positions": [
+        201
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.33（F->P）：模型认可该替换；该位点野生型掩码对数概率 -1.59"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.33）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 F201P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.326,
+        "wt_logprob": -1.591,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -77.2,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "F201P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 9
+      }
+    },
+    {
+      "mutations": [
+        "Q202P"
+      ],
+      "positions": [
+        202
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.76（Q->P）：模型认可该替换；该位点野生型掩码对数概率 -2.23"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.76）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 Q202P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 1.764,
+        "wt_logprob": -2.23,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -31.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "Q202P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 10
+      }
+    },
+    {
+      "mutations": [
+        "E207A"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.16（E->A）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.16）；不符合该蛋白类型的活性改造偏好。X 位替换为 A，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207A：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.164,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位替换为 A，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -49.8,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E207A",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 11
+      }
+    },
+    {
+      "mutations": [
+        "E207L"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.89（E->L）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.89）；不符合该蛋白类型的活性改造偏好。X 位替换为 L，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207L：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.886,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位替换为 L，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 28.3,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E207L",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 12
+      }
+    },
+    {
+      "mutations": [
+        "E207P"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=2.33（E->P）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=2.33）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 2.332,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -25.7,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E207P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 13
+      }
+    },
+    {
+      "mutations": [
+        "E207Q"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.63（E->Q）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.63）；不符合该蛋白类型的活性改造偏好。X 位替换为 Q，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207Q：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.626,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位替换为 Q，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 5.4,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": true,
+          "label": "E207Q",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": true,
+        "charge_change": 1.0,
+        "rank": 14
+      }
+    },
+    {
+      "mutations": [
+        "E207S"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.77（E->S）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.77）；不符合该蛋白类型的活性改造偏好。X 位替换为 S，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207S：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.769,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位替换为 S，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -49.4,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E207S",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 15
+      }
+    },
+    {
+      "mutations": [
+        "E207T"
+      ],
+      "positions": [
+        207
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.11（E->T）：模型认可该替换；该位点野生型掩码对数概率 -3.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.11）；不符合该蛋白类型的活性改造偏好。X 位替换为 T，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E207T：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.11,
+        "wt_logprob": -3.265,
+        "rulepack_note": "X 位替换为 T，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -22.3,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E207T",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 16
+      }
+    },
+    {
+      "mutations": [
+        "P208R"
+      ],
+      "positions": [
+        208
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.20（P->R）：模型认可该替换；该位点野生型掩码对数概率 -1.41"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.20）；不符合该蛋白类型的活性改造偏好。Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 P208R：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.195,
+        "wt_logprob": -1.412,
+        "rulepack_note": "Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 60.7,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "P208R",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 17
+      }
+    },
+    {
+      "mutations": [
+        "E210A"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.27（E->A）：模型认可该替换；该位点野生型掩码对数概率 -2.63"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.27）；不符合该蛋白类型的活性改造偏好。X 位替换为 A，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E210A：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.272,
+        "wt_logprob": -2.631,
+        "rulepack_note": "X 位替换为 A，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -49.8,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E210A",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 18
+      }
+    },
+    {
+      "mutations": [
+        "E210P"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.87（E->P）：模型认可该替换；该位点野生型掩码对数概率 -2.63"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.87）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E210P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.874,
+        "wt_logprob": -2.631,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -25.7,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E210P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 19
+      }
+    },
+    {
+      "mutations": [
+        "E210Q"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.33（E->Q）：模型认可该替换；该位点野生型掩码对数概率 -2.63"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.33）；不符合该蛋白类型的活性改造偏好。X 位替换为 Q，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E210Q：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.33,
+        "wt_logprob": -2.631,
+        "rulepack_note": "X 位替换为 Q，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 5.4,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": true,
+          "label": "E210Q",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": true,
+        "charge_change": 1.0,
+        "rank": 20
+      }
+    },
+    {
+      "mutations": [
+        "E210S"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.62（E->S）：模型认可该替换；该位点野生型掩码对数概率 -2.63"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.62）；不符合该蛋白类型的活性改造偏好。X 位替换为 S，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 E210S：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.619,
+        "wt_logprob": -2.631,
+        "rulepack_note": "X 位替换为 S，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -49.4,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "E210S",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 21
+      }
+    },
+    {
+      "mutations": [
+        "P211D"
+      ],
+      "positions": [
+        211
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.00（P->D）：模型认可该替换；该位点野生型掩码对数概率 -2.56"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.00）；不符合该蛋白类型的活性改造偏好。Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 P211D：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.004,
+        "wt_logprob": -2.556,
+        "rulepack_note": "Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -1.6,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": false,
+          "label": "P211D",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": -1.0,
+        "rank": 22
+      }
+    },
+    {
+      "mutations": [
+        "P211K"
+      ],
+      "positions": [
+        211
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.59（P->K）：模型认可该替换；该位点野生型掩码对数概率 -2.56"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.59）；不符合该蛋白类型的活性改造偏好。Y 位引入赖氨酸：为赖氨酰氧化酶介导的共价交联提供位点，可增强力学强度；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增交联候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 P211K：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增交联候选位点。",
+      "detail": {
+        "delta_logp": 1.59,
+        "wt_logprob": -2.556,
+        "rulepack_note": "Y 位引入赖氨酸：为赖氨酰氧化酶介导的共价交联提供位点，可增强力学强度；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 55.9,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "P211K",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 23
+      }
+    },
+    {
+      "mutations": [
+        "P211R"
+      ],
+      "positions": [
+        211
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.42（P->R）：模型认可该替换；该位点野生型掩码对数概率 -2.56"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.42）；不符合该蛋白类型的活性改造偏好。Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 P211R：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.424,
+        "wt_logprob": -2.556,
+        "rulepack_note": "Y 位引入带电残基：可在三条链之间形成离子型相互作用，提升三股螺旋稳定性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 60.7,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "P211R",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 24
+      }
+    },
+    {
+      "mutations": [
+        "A213E"
+      ],
+      "positions": [
+        213
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.04（A->E）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.04）；不符合该蛋白类型的活性改造偏好。X 位引入带电残基：参与链间离子型相互作用；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 A213E：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.037,
+        "wt_logprob": -2.476,
+        "rulepack_note": "X 位引入带电残基：参与链间离子型相互作用；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 49.8,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": false,
+          "label": "A213E",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": -1.0,
+        "rank": 25
+      }
+    },
+    {
+      "mutations": [
+        "A213K"
+      ],
+      "positions": [
+        213
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.12（A->K）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.12）；不符合该蛋白类型的活性改造偏好。X 位引入带电残基：参与链间离子型相互作用；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 A213K：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.117,
+        "wt_logprob": -2.476,
+        "rulepack_note": "X 位引入带电残基：参与链间离子型相互作用；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 80.0,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "A213K",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 26
+      }
+    },
+    {
+      "mutations": [
+        "A213P"
+      ],
+      "positions": [
+        213
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.55（A->P）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.55）；不符合该蛋白类型的活性改造偏好。X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 A213P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.547,
+        "wt_logprob": -2.476,
+        "rulepack_note": "X 位引入脯氨酸：可提高主链刚性，间接增强三股螺旋稳定性（3-羟化较弱）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 24.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": true,
+          "label": "A213P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": true,
+        "charge_change": 0.0,
+        "rank": 27
+      }
+    },
+    {
+      "mutations": [
+        "S214P"
+      ],
+      "positions": [
+        214
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.44（S->P）：模型认可该替换；该位点野生型掩码对数概率 -3.01"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.44）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 S214P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 1.442,
+        "wt_logprob": -3.008,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 23.7,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "S214P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 28
+      }
+    },
+    {
+      "mutations": [
+        "M217P"
+      ],
+      "positions": [
+        217
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.30（M->P）：模型认可该替换；该位点野生型掩码对数概率 -1.70"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.30）；不符合该蛋白类型的活性改造偏好。Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [
+        "新增羟脯氨酸候选位点"
+      ],
+      "category": "collagen",
+      "rationale": "单点突变 M217P：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 告警：新增羟脯氨酸候选位点。",
+      "detail": {
+        "delta_logp": 0.303,
+        "wt_logprob": -1.696,
+        "rulepack_note": "Y 位引入脯氨酸：可被脯氨酰-4-羟化酶转化为羟脯氨酸，是提升三股螺旋热稳定性最直接的路径（文献报道 Tm 可提升 10 °C 以上）；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -50.2,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "M217P",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 29
+      }
+    },
+    {
+      "mutations": [
+        "P222L"
+      ],
+      "positions": [
+        222
+      ],
+      "site_count": 1,
+      "total_score": 76.0,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.27（P->L）：模型认可该替换；该位点野生型掩码对数概率 -1.10"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 90.0,
+          "weight": 0.24,
+          "contribution": 21.6,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.27）；不符合该蛋白类型的活性改造偏好。X 位替换为 L，影响中性；无结构信息，采用中性因子"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 18.0,
+          "rationale": "依据：模型耐受度，得分 100.0。（缺少 野生型 pLDDT、二级结构上下文，相关证据已从权重中剔除）"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "collagen",
+      "rationale": "单点突变 P222L：稳定性 100、活性 90、折叠 100、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.27,
+        "wt_logprob": -1.102,
+        "rulepack_note": "X 位替换为 L，影响中性；无结构信息，采用中性因子",
+        "rulepack_factor": 0.5,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 54.0,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "P222L",
+          "buried": null,
+          "secondary_structure": null
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": null,
+          "tolerance_from_secondary_structure": null,
+          "wild_type_plddt": null,
+          "secondary_structure": null,
+          "missing_evidence": [
+            "野生型 pLDDT",
+            "二级结构上下文"
+          ]
+        },
+        "context": "无结构信息",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 30
+      }
+    }
+  ],
+  "consistency_check": {
+    "protected_violations": [],
+    "protected_violation_count": 0,
+    "y_site_proline_proposals": 227,
+    "x_site_proposals": 6536,
+    "passed": true
+  },
+  "hints": [
+    "Gly-X-Y 相位统计：Gly 位 363、X 位 363、Y 位 363、非重复区 375；重复密度 0.81。",
+    "天然羟脯氨酸候选位点（Y 位 Pro）：125 个；天然交联候选位点（Y 位 Lys）：25 个。",
+    "稳定性提升首选：把 Y 位替换为 Pro（新增羟化位点），其次在 X/Y 位引入 K/D/E（链间离子作用）。",
+    "交联设计：在 Y 位引入 Lys，配合赖氨酰氧化酶处理形成共价交联。",
+    "严禁改变 Gly 位——这会直接中断三股螺旋。"
+  ],
+  "warnings": []
+}

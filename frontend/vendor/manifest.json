@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-09-15T23:37:49",
+  "note": "本目录为前端第三方库的本地副本，由 scripts/fetch_vendor_assets.py 生成。企业内网部署时连同本目录一起拷贝即可离线运行。",
+  "assets": {
+    "echarts.min.js": {
+      "status": "cached",
+      "bytes": 1024740,
+      "description": "雷达图 / 折线图 / 散点图 / 柱状图 / 轨道图",
+      "license": "Apache-2.0"
+    },
+    "3Dmol-min.js": {
+      "status": "downloaded",
+      "bytes": 513478,
+      "detail": "513478 bytes from https://cdn.jsdelivr.net/npm/3dmol@2.4.0/build/3Dmol-min.js",
+      "description": "PDB 三维结构渲染与 pLDDT 着色",
+      "license": "BSD-3-Clause",
+      "source": "https://cdn.jsdelivr.net/npm/3dmol@2.4.0/build/3Dmol-min.js"
+    },
+    "chartjs.min.js": {
+      "status": "cached",
+      "bytes": 205399,
+      "description": "轻量备用图表库（ECharts 不可用时降级）",
+      "license": "MIT"
+    }
+  }
+}

@@ -1,0 +1,1793 @@
+{
+  "case": "industrial_enzyme",
+  "target": "sp|P00782|SUBT_BACAM Subtilisin BPN' OS=Bacillus amyloliquefaciens OX=1390 GN=apr PE=1 SV=1",
+  "sequence_length": 382,
+  "sequence_check": {
+    "ok": true,
+    "warnings": [],
+    "errors": []
+  },
+  "active_site": {
+    "catalytic_ser_0based": 327,
+    "catalytic_ser_1based": 328,
+    "protected": {
+      "139": "催化天冬氨酸 Asp（Asp32，BPN' 编号）",
+      "171": "催化组氨酸 His（His64，BPN' 编号）",
+      "328": "催化丝氨酸 Ser（Ser221，BPN' 编号）",
+      "261": "氧负离子洞天冬酰胺（催化 Ser 上游 67 位，BPN' 家族保守）"
+    },
+    "expected_spacing": {
+      "ser": 0,
+      "his": 157,
+      "asp": 189,
+      "asn": 66
+    },
+    "spacing_check": {
+      "ser": {
+        "expected": 0,
+        "actual": 0,
+        "ok": true
+      },
+      "his": {
+        "expected": 157,
+        "actual": 157,
+        "ok": true
+      },
+      "asp": {
+        "expected": 189,
+        "actual": 189,
+        "ok": true
+      },
+      "asn": {
+        "expected": 66,
+        "actual": 67,
+        "ok": true
+      }
+    },
+    "all_checks_passed": true
+  },
+  "protection": {
+    "total": 117,
+    "catalytic": {
+      "139": "催化天冬氨酸 Asp（Asp32，BPN' 编号）",
+      "171": "催化组氨酸 His（His64，BPN' 编号）",
+      "328": "催化丝氨酸 Ser（Ser221，BPN' 编号）",
+      "261": "氧负离子洞天冬酰胺（催化 Ser 上游 67 位，BPN' 家族保守）",
+      "232": "底物结合口袋残基（S125，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "233": "底物结合口袋残基（L126，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "234": "底物结合口袋残基（G127，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "236": "底物结合口袋残基（P129，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "263": "底物结合口袋残基（E156，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "324": "底物结合口袋残基（Y217，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据"
+    },
+    "proregion_count": 107,
+    "proregion_range": [
+      1,
+      107
+    ],
+    "pocket": {
+      "232": "底物结合口袋残基（S125，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "233": "底物结合口袋残基（L126，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "234": "底物结合口袋残基（G127，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "236": "底物结合口袋残基（P129，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "263": "底物结合口袋残基（E156，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据",
+      "324": "底物结合口袋残基（Y217，BPN' 编号），直接决定底物识别与 kcat/Km，改造需有结构依据"
+    }
+  },
+  "structure": {
+    "source": "esmatlas",
+    "mean_plddt": 93.9,
+    "secondary_structure_composition": {
+      "helix": 0.123,
+      "sheet": 0.0157,
+      "coil": 0.7749,
+      "helix_310": 0.0864,
+      "helix_pi": 0.0,
+      "helix_total": 0.2094
+    },
+    "elapsed_seconds": 0.0,
+    "warnings": []
+  },
+  "design": {
+    "position_count": 264,
+    "candidate_count": 5016,
+    "protected_count": 117,
+    "mature_start_1based": 108,
+    "elapsed_seconds": 14.04,
+    "summary": {
+      "candidate_count": 5016,
+      "combination_count": 0,
+      "score_max": 70.76,
+      "score_mean": 29.4,
+      "score_median": 21.18,
+      "flagged_count": 3338,
+      "top_candidate": {
+        "mutations": [
+          "G267S"
+        ],
+        "total_score": 70.76,
+        "rationale": "单点突变 G267S：稳定性 100、活性 91、折叠 70、表达 70、安全性 100。 未触发风险告警。"
+      },
+      "elapsed_seconds": 14.04,
+      "evaluated_candidates": 5016
+    }
+  },
+  "top_candidates": [
+    {
+      "mutations": [
+        "G267S"
+      ],
+      "positions": [
+        267
+      ],
+      "site_count": 1,
+      "total_score": 70.76,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.06（G->S）：模型认可该替换；该位点野生型掩码对数概率 -1.20"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.06）；不符合该蛋白类型的活性改造偏好。替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 69.58,
+          "weight": 0.18,
+          "contribution": 12.52,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（87）、二级结构上下文（-），得分 69.6。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 G267S：稳定性 100、活性 91、折叠 70、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.057,
+        "wt_logprob": -1.197,
+        "rulepack_note": "替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 28.9,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "G267S",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 40.4,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 87.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=87，相对SASA=0.35，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 1
+      }
+    },
+    {
+      "mutations": [
+        "S269P"
+      ],
+      "positions": [
+        269
+      ],
+      "site_count": 1,
+      "total_score": 70.37,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.12（S->P）：模型认可该替换；该位点野生型掩码对数概率 -2.26"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.12）。远离活性中心（距催化丝氨酸 59 个残基），替换为 P 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 66.07,
+          "weight": 0.18,
+          "contribution": 11.89,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（93）、二级结构上下文（-），得分 66.1。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 S269P：稳定性 100、活性 92、折叠 66、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.122,
+        "wt_logprob": -2.258,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 59 个残基），替换为 P 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 23.7,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "S269P",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 32.6,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 93.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=93，相对SASA=0.30，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 2
+      }
+    },
+    {
+      "mutations": [
+        "G238E"
+      ],
+      "positions": [
+        238
+      ],
+      "site_count": 1,
+      "total_score": 70.16,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.94（G->E）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.94）。远离活性中心（距催化丝氨酸 90 个残基），替换为 E 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 G238E：稳定性 100、活性 92、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.938,
+        "wt_logprob": -2.476,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 90 个残基），替换为 E 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 78.3,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": false,
+          "label": "G238E",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.30，无规卷曲",
+        "is_conservative": false,
+        "charge_change": -1.0,
+        "rank": 3
+      }
+    },
+    {
+      "mutations": [
+        "Q313F"
+      ],
+      "positions": [
+        313
+      ],
+      "site_count": 1,
+      "total_score": 69.95,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.70（Q->F）：模型认可该替换；该位点野生型掩码对数概率 -5.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.70）。远离活性中心（距催化丝氨酸 15 个残基），替换为 F 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 63.73,
+          "weight": 0.18,
+          "contribution": 11.47,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（97）、二级结构上下文（-），得分 63.7。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 Q313F：稳定性 100、活性 92、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.701,
+        "wt_logprob": -5.476,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 15 个残基），替换为 F 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 46.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "Q313F",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 27.4,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 97.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=97，相对SASA=0.22，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 4
+      }
+    },
+    {
+      "mutations": [
+        "Q313K"
+      ],
+      "positions": [
+        313
+      ],
+      "site_count": 1,
+      "total_score": 69.95,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.30（Q->K）：模型认可该替换；该位点野生型掩码对数概率 -5.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.30）。远离活性中心（距催化丝氨酸 15 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 63.73,
+          "weight": 0.18,
+          "contribution": 11.47,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（97）、二级结构上下文（-），得分 63.7。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 Q313K：稳定性 100、活性 92、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.3,
+        "wt_logprob": -5.476,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 15 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 24.8,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": true,
+          "label": "Q313K",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 27.4,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 97.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=97，相对SASA=0.22，无规卷曲",
+        "is_conservative": true,
+        "charge_change": 1.0,
+        "rank": 5
+      }
+    },
+    {
+      "mutations": [
+        "V111L"
+      ],
+      "positions": [
+        111
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.05（V->L）：模型认可该替换；该位点野生型掩码对数概率 -1.76"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.05）；不符合该蛋白类型的活性改造偏好。替换为 L，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 V111L：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.055,
+        "wt_logprob": -1.76,
+        "rulepack_note": "替换为 L，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 26.7,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "V111L",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.27，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 6
+      }
+    },
+    {
+      "mutations": [
+        "V111T"
+      ],
+      "positions": [
+        111
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.09（V->T）：模型认可该替换；该位点野生型掩码对数概率 -1.76"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.09）；不符合该蛋白类型的活性改造偏好。替换为 T，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 V111T：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.09,
+        "wt_logprob": -1.76,
+        "rulepack_note": "替换为 T，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -23.9,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "V111T",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.27，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 7
+      }
+    },
+    {
+      "mutations": [
+        "G238D"
+      ],
+      "positions": [
+        238
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.09（G->D）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.09）；不符合该蛋白类型的活性改造偏好。替换为 D，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 G238D：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.09,
+        "wt_logprob": -2.476,
+        "rulepack_note": "替换为 D，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 51.0,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": false,
+          "label": "G238D",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.30，无规卷曲",
+        "is_conservative": false,
+        "charge_change": -1.0,
+        "rank": 8
+      }
+    },
+    {
+      "mutations": [
+        "G238S"
+      ],
+      "positions": [
+        238
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.93（G->S）：模型认可该替换；该位点野生型掩码对数概率 -2.48"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.93）；不符合该蛋白类型的活性改造偏好。替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 G238S：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.934,
+        "wt_logprob": -2.476,
+        "rulepack_note": "替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 28.9,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "G238S",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.30，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 9
+      }
+    },
+    {
+      "mutations": [
+        "T265A"
+      ],
+      "positions": [
+        265
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.32（T->A）：模型认可该替换；该位点野生型掩码对数概率 -2.44"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.32）；不符合该蛋白类型的活性改造偏好。替换为 A，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 T265A：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.32,
+        "wt_logprob": -2.441,
+        "rulepack_note": "替换为 A，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -27.5,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "T265A",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.34，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 10
+      }
+    },
+    {
+      "mutations": [
+        "T265S"
+      ],
+      "positions": [
+        265
+      ],
+      "site_count": 1,
+      "total_score": 69.92,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.91（T->S）：模型认可该替换；该位点野生型掩码对数概率 -2.44"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.91）；不符合该蛋白类型的活性改造偏好。替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.9,
+          "weight": 0.18,
+          "contribution": 11.68,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（95）、二级结构上下文（-），得分 64.9。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 T265S：稳定性 100、活性 91、折叠 65、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.909,
+        "wt_logprob": -2.441,
+        "rulepack_note": "替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -27.1,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": true,
+          "label": "T265S",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 30.0,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 95.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=95，相对SASA=0.34，无规卷曲",
+        "is_conservative": true,
+        "charge_change": 0.0,
+        "rank": 11
+      }
+    },
+    {
+      "mutations": [
+        "P159E"
+      ],
+      "positions": [
+        159
+      ],
+      "site_count": 1,
+      "total_score": 69.85,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.21（P->E）：模型认可该替换；该位点野生型掩码对数概率 -3.99"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.21）。远离活性中心（距催化丝氨酸 169 个残基），替换为 E 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 63.14,
+          "weight": 0.18,
+          "contribution": 11.37,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（98）、二级结构上下文（-），得分 63.1。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 P159E：稳定性 100、活性 92、折叠 63、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.208,
+        "wt_logprob": -3.99,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 169 个残基），替换为 E 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 25.7,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": false,
+          "label": "P159E",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 26.1,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 98.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=98，相对SASA=0.35，无规卷曲",
+        "is_conservative": false,
+        "charge_change": -1.0,
+        "rank": 12
+      }
+    },
+    {
+      "mutations": [
+        "P159K"
+      ],
+      "positions": [
+        159
+      ],
+      "site_count": 1,
+      "total_score": 69.85,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.62（P->K）：模型认可该替换；该位点野生型掩码对数概率 -3.99"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.62）。远离活性中心（距催化丝氨酸 169 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 63.14,
+          "weight": 0.18,
+          "contribution": 11.37,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（98）、二级结构上下文（-），得分 63.1。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 P159K：稳定性 100、活性 92、折叠 63、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.621,
+        "wt_logprob": -3.99,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 169 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 55.9,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "P159K",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 26.1,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 98.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=98，相对SASA=0.35，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 13
+      }
+    },
+    {
+      "mutations": [
+        "N168A"
+      ],
+      "positions": [
+        168
+      ],
+      "site_count": 1,
+      "total_score": 69.82,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.07（N->A）：模型认可该替换；该位点野生型掩码对数概率 -3.90"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.07）；不符合该蛋白类型的活性改造偏好。替换为 A，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.31,
+          "weight": 0.18,
+          "contribution": 11.58,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（96）、二级结构上下文（-），得分 64.3。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 N168A：稳定性 100、活性 91、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.07,
+        "wt_logprob": -3.895,
+        "rulepack_note": "替换为 A，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -25.5,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "N168A",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 28.7,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 96.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=96，相对SASA=0.23，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 14
+      }
+    },
+    {
+      "mutations": [
+        "N168D"
+      ],
+      "positions": [
+        168
+      ],
+      "site_count": 1,
+      "total_score": 69.82,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=3.58（N->D）：模型认可该替换；该位点野生型掩码对数概率 -3.90"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=3.58）；不符合该蛋白类型的活性改造偏好。替换为 D，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.31,
+          "weight": 0.18,
+          "contribution": 11.58,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（96）、二级结构上下文（-），得分 64.3。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 N168D：稳定性 100、活性 91、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 3.583,
+        "wt_logprob": -3.895,
+        "rulepack_note": "替换为 D，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -3.0,
+          "charge_change": -1.0,
+          "charge_change_ph7": -1.0,
+          "is_conservative": true,
+          "label": "N168D",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 28.7,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 96.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=96，相对SASA=0.23，无规卷曲",
+        "is_conservative": true,
+        "charge_change": -1.0,
+        "rank": 15
+      }
+    },
+    {
+      "mutations": [
+        "Q210S"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 69.82,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.52（Q->S）：模型认可该替换；该位点野生型掩码对数概率 -2.71"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.52）；不符合该蛋白类型的活性改造偏好。替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.31,
+          "weight": 0.18,
+          "contribution": 11.58,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（96）、二级结构上下文（-），得分 64.3。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 Q210S：稳定性 100、活性 91、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.521,
+        "wt_logprob": -2.707,
+        "rulepack_note": "替换为 S，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -54.8,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "Q210S",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 28.7,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 96.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=96，相对SASA=0.31，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 16
+      }
+    },
+    {
+      "mutations": [
+        "Q210T"
+      ],
+      "positions": [
+        210
+      ],
+      "site_count": 1,
+      "total_score": 69.82,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.44（Q->T）：模型认可该替换；该位点野生型掩码对数概率 -2.71"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 91.0,
+          "weight": 0.24,
+          "contribution": 21.84,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.44）；不符合该蛋白类型的活性改造偏好。替换为 T，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 64.31,
+          "weight": 0.18,
+          "contribution": 11.58,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（96）、二级结构上下文（-），得分 64.3。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 Q210T：稳定性 100、活性 91、折叠 64、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.437,
+        "wt_logprob": -2.707,
+        "rulepack_note": "替换为 T，不属于明显的稳定化或去稳定化方向；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.55,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -27.7,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "Q210T",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 28.7,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 96.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=96，相对SASA=0.31，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 17
+      }
+    },
+    {
+      "mutations": [
+        "S268G"
+      ],
+      "positions": [
+        268
+      ],
+      "site_count": 1,
+      "total_score": 69.77,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.60（S->G）：模型认可该替换；该位点野生型掩码对数概率 -2.17"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 86.4,
+          "weight": 0.24,
+          "contribution": 20.74,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.60）；不符合该蛋白类型的活性改造偏好。替换为 G，该残基在嗜热同源物中偏少，可能降低热稳定性（G/N/Q 还带来脱酰胺风险，C/M 带来氧化风险）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 70.17,
+          "weight": 0.18,
+          "contribution": 12.63,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（86）、二级结构上下文（-），得分 70.2。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 S268G：稳定性 100、活性 86、折叠 70、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.604,
+        "wt_logprob": -2.174,
+        "rulepack_note": "替换为 G，该残基在嗜热同源物中偏少，可能降低热稳定性（G/N/Q 还带来脱酰胺风险，C/M 带来氧化风险）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.32,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": -28.9,
+          "charge_change": 0.0,
+          "charge_change_ph7": 0.0,
+          "is_conservative": false,
+          "label": "S268G",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 41.7,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 86.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=86，相对SASA=0.42，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 0.0,
+        "rank": 18
+      }
+    },
+    {
+      "mutations": [
+        "N225K"
+      ],
+      "positions": [
+        225
+      ],
+      "site_count": 1,
+      "total_score": 69.74,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=0.23（N->K）：模型认可该替换；该位点野生型掩码对数概率 -1.27"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=0.23）。远离活性中心（距催化丝氨酸 103 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 62.56,
+          "weight": 0.18,
+          "contribution": 11.26,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（99）、二级结构上下文（-），得分 62.6。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 N225K：稳定性 100、活性 92、折叠 63、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 0.234,
+        "wt_logprob": -1.27,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 103 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 54.5,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": false,
+          "label": "N225K",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 24.8,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 99.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=99，相对SASA=0.35，无规卷曲",
+        "is_conservative": false,
+        "charge_change": 1.0,
+        "rank": 19
+      }
+    },
+    {
+      "mutations": [
+        "Q292K"
+      ],
+      "positions": [
+        292
+      ],
+      "site_count": 1,
+      "total_score": 69.74,
+      "dimensions": [
+        {
+          "key": "stability",
+          "label": "稳定性贡献",
+          "raw": 100.0,
+          "weight": 0.28,
+          "contribution": 28.0,
+          "rationale": "ESM-2 掩码边缘似然比 ΔlogP=1.61（Q->K）：模型认可该替换；该位点野生型掩码对数概率 -2.61"
+        },
+        {
+          "key": "activity",
+          "label": "活性影响",
+          "raw": 92.0,
+          "weight": 0.24,
+          "contribution": 22.08,
+          "rationale": "模型对替换接受度较高（ΔlogP=1.61）。远离活性中心（距催化丝氨酸 36 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等"
+        },
+        {
+          "key": "foldability",
+          "label": "折叠可行性",
+          "raw": 62.56,
+          "weight": 0.18,
+          "contribution": 11.26,
+          "rationale": "依据：模型耐受度、野生型 pLDDT（99）、二级结构上下文（-），得分 62.6。"
+        },
+        {
+          "key": "expression",
+          "label": "宿主表达适配",
+          "raw": 70.0,
+          "weight": 0.12,
+          "contribution": 8.4,
+          "rationale": "该替换不改变停滞基序与含硫残基负荷，表达影响中性"
+        },
+        {
+          "key": "risk",
+          "label": "新增风险位点",
+          "raw": 100.0,
+          "weight": 0.18,
+          "contribution": 0.0,
+          "rationale": "未引入新的化学不稳定位点"
+        }
+      ],
+      "flags": [],
+      "category": "protease",
+      "rationale": "单点突变 Q292K：稳定性 100、活性 92、折叠 63、表达 70、安全性 100。 未触发风险告警。",
+      "detail": {
+        "delta_logp": 1.612,
+        "wt_logprob": -2.613,
+        "rulepack_note": "远离活性中心（距催化丝氨酸 36 个残基），替换为 K 属于嗜热同源物富集的残基，有利于拓宽温度适应范围（建议同时核对表面可及性）；该位点部分暴露，改造风险中等",
+        "rulepack_factor": 0.6,
+        "risk_details": {},
+        "deltas": {
+          "volume_change": 24.8,
+          "charge_change": 1.0,
+          "charge_change_ph7": 1.0,
+          "is_conservative": true,
+          "label": "Q292K",
+          "buried": false,
+          "secondary_structure": "-"
+        },
+        "foldability_evidence": {
+          "tolerance_from_model": 100.0,
+          "tolerance_from_plddt": 24.8,
+          "tolerance_from_secondary_structure": 82.0,
+          "wild_type_plddt": 99.0,
+          "secondary_structure": "-",
+          "missing_evidence": []
+        },
+        "context": "pLDDT=99，相对SASA=0.32，无规卷曲",
+        "is_conservative": true,
+        "charge_change": 1.0,
+        "rank": 20
+      }
+    }
+  ],
+  "consistency_check": {
+    "protected_violations": [],
+    "proregion_recommendations": 0,
+    "catalytic_collisions": 0,
+    "spacing_check_passed": true,
+    "passed": true
+  },
+  "hints": [
+    "已按序列模体识别活性位点：第 139 位 催化天冬氨酸 Asp；第 171 位 催化组氨酸 His；第 328 位 催化丝氨酸 Ser；第 261 位 氧负离子洞天冬酰胺",
+    "相对间距自校验：4/4 项通过",
+    "提升 kcat/Km：优先改造底物结合口袋（S1-S4）与表面环区，严禁改动催化三联体与氧负离子洞；建议以「表面 + 偏离活性中心」为筛选前提。",
+    "拓宽 pH 适应范围：在远离活性中心处做表面电荷重排（D/E ↔ K/R），改变活性中心局部静电环境；建议成对改换以维持整体电荷平衡。",
+    "拓宽温度适应范围：在表面位点引入 E/K/R/Y/F/W/P（嗜热同源物富集残基），并优先选择埋藏良好的位点做填充型替换。",
+    "改造底物特异性：S1 口袋底部的残基决定 P1 侧链偏好，建议先预测结构确认口袋位置，再针对口袋内壁做定点改造。"
+  ],
+  "warnings": []
+}

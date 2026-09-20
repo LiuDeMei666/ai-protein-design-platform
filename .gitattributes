@@ -1,0 +1,70 @@
+# ==========================================================================
+# 换行符与二进制属性
+# --------------------------------------------------------------------------
+# 目的：让 Windows / macOS / Linux 三种机器检出同一份代码时行为一致。
+# 没有这个文件时，Windows 协作者的一次保存就会把整个文件标成"全文改动"，
+# diff 里全是看不见的 ^M，评审时完全没法看。
+# ==========================================================================
+
+# 默认：仓库内存 LF；检出也按 LF（跨平台一致，diff 干净）
+* text=auto eol=lf
+
+# --------------------------------------------------------------------------
+# 文本类型显式声明
+# --------------------------------------------------------------------------
+# 显式写出来是为了防止编码/内容特征被误判成二进制。
+# run_server.sh 尤其重要：CRLF 的 shell 脚本在 Linux 上会报
+# `bad interpreter: /bin/bash^M`，排查起来很费时间。
+*.py     text
+*.js     text
+*.css    text
+*.html   text
+*.md     text
+*.yaml   text
+*.yml    text
+*.json   text
+*.sh     text eol=lf
+*.ini    text
+*.cfg    text
+*.txt    text
+*.example text
+
+# --------------------------------------------------------------------------
+# 真二进制：禁止任何换行符转换
+# --------------------------------------------------------------------------
+# .xlsx / .docx 本质是 zip 容器，一旦被当文本处理就会损坏且难以察觉。
+*.png         binary
+*.jpg         binary
+*.jpeg        binary
+*.gif         binary
+*.ico         binary
+*.xlsx        binary
+*.docx        binary
+*.zip         binary
+*.gz          binary
+*.tar         binary
+*.bin         binary
+*.safetensors binary
+*.npz         binary
+*.npy         binary
+*.db          binary
+*.sqlite      binary
+*.pdb         binary
+
+# --------------------------------------------------------------------------
+# 第三方库：保持原始字节，不做换行符转换
+# --------------------------------------------------------------------------
+# frontend/vendor/ 是 scripts/fetch_vendor_assets.py 从镜像下载的 minified JS。
+# 用 `-text` 关掉换行符规整，让仓库里存的字节与上游发布**完全一致**：
+#   * 将来升级版本时可以对上游文件做哈希比对，确认拿到的确实是那一版；
+#   * 也避免"下载一份、仓库一份"因换行符不同而产生假 diff。
+# 代价是这类文件的 diff 会显示为二进制差异——对 minified 文件无所谓，
+# 版本信息以同目录的 manifest.json 为准。
+
+# 不计入 GitHub 语言统计：否则整个仓库会被显示成 JavaScript 项目，
+# 让人误以为这是个前端主导的工程。
+frontend/vendor/* linguist-vendored
+frontend/vendor/* -text
+
+# data/seeds 下的序列与密码子表同理：是外部数据，不是本项目代码
+data/seeds/*     linguist-documentation

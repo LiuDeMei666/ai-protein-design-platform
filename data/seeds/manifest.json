@@ -1,0 +1,29 @@
+{
+  "collagen_col1a1_human.fasta": {
+    "accession": "P02452",
+    "entry_name": "CO1A1_HUMAN",
+    "protein_name": "Collagen alpha-1(I) chain",
+    "organism": "Homo sapiens",
+    "length": 1464,
+    "length_actual": 1464,
+    "label": "人 I 型胶原 α1 链 (COL1A1)"
+  },
+  "protease_subtilisin.fasta": {
+    "accession": "P00782",
+    "entry_name": "SUBT_BACAM",
+    "protein_name": "Subtilisin BPN'",
+    "organism": "Bacillus amyloliquefaciens",
+    "length": 382,
+    "length_actual": 382,
+    "label": "枯草杆菌蛋白酶 (Subtilisin)"
+  },
+  "protein_a_staph.fasta": {
+    "accession": "P38507",
+    "entry_name": "SPA_STAAU",
+    "protein_name": "Immunoglobulin G-binding protein A",
+    "organism": "Staphylococcus aureus",
+    "length": 508,
+    "length_actual": 508,
+    "label": "金黄色葡萄球菌蛋白 A (Protein A / spa)"
+  }
+}

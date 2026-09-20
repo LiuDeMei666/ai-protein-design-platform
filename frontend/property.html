@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>性质报告 · AI 辅助蛋白设计平台</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="app">
+  <header id="app-nav"></header>
+
+  <main class="app-main">
+    <div class="page-head">
+      <div>
+        <div class="page-title">理化性质报告</div>
+        <div class="page-desc">
+          9 项关键理化性质评分（耐受性、溶解性、聚集、表达、修饰位点、免疫原性、蛋白酶抗性），
+          每项均标注算法来源与逐条证据。平台评分是 0-100 的相对排序指标，不是绝对物理量。
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-run">开始预测</button>
+    </div>
+
+    <div id="alerts"></div>
+
+    <!-- 参数 -->
+    <section class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>预测参数</div>
+        <span class="panel-sub" id="job-status">未提交</span>
+      </div>
+      <div class="panel-body">
+        <div class="grid grid-aside-main" style="gap:14px;align-items:start">
+          <div>
+            <div class="field mb-0">
+              <div class="field-label"><span>目标蛋白序列</span>
+                <span class="text-xs text-2" id="seq-len">0 aa</span></div>
+              <textarea class="textarea seq" id="sequence" spellcheck="false" style="min-height:96px"
+                placeholder="粘贴氨基酸序列或 FASTA 文本"></textarea>
+            </div>
+          </div>
+          <div>
+            <div class="field">
+              <div class="field-label"><span>蛋白类型</span></div>
+              <div class="chips" id="protein-types"></div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span>宿主表达体系（决定密码子偏好参考表）</span></div>
+              <select class="select" id="host"></select>
+              <div class="field-hint" id="host-hint"></div>
+            </div>
+            <div class="row wrap" style="gap:14px">
+              <label class="switch">
+                <input type="checkbox" id="use-structure" checked>
+                <span class="track"></span><span>使用结构增强</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="use-esm" checked>
+                <span class="track"></span><span>使用 ESM-2 自然度</span>
+              </label>
+            </div>
+            <div class="field-hint mt-1">
+              关闭结构增强可在断网时秒级出结果；关闭 ESM-2 可完全不占用 GPU。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 结果 -->
+    <div id="result" class="hidden">
+      <div class="grid grid-6 mt-3" id="overview-cards"></div>
+
+      <div class="grid grid-main-aside mt-3">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>综合评估雷达</div>
+            <span class="panel-sub" id="radar-sub">—</span>
+          </div>
+          <div class="panel-body">
+            <div class="chart chart-lg" id="radar-chart"></div>
+          </div>
+        </section>
+
+        <div class="col">
+          <section class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dot"></span>风险分布</div>
+            </div>
+            <div class="panel-body">
+              <div class="chart" id="risk-chart" style="height:210px"></div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dot"></span>净电荷曲线</div>
+              <span class="panel-sub">pH 0-14</span>
+            </div>
+            <div class="panel-body">
+              <div class="chart" id="charge-chart" style="height:200px"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- 位点轨道图 -->
+      <section class="panel mt-3">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>风险位点轨道图</div>
+          <span class="panel-sub" id="track-sub">—</span>
+        </div>
+        <div class="panel-body">
+          <div class="track-wrap">
+            <div class="track" id="track"></div>
+          </div>
+          <div class="track-legend" id="track-legend"></div>
+        </div>
+      </section>
+
+      <!-- 基础理量 -->
+      <section class="panel mt-3">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>基础生物物理量</div>
+          <span class="panel-sub">确定性计算，与模型无关，完全可复现</span>
+        </div>
+        <div class="panel-body" id="biophys-body"></div>
+      </section>
+
+      <!-- 逐项详情 -->
+      <section class="panel mt-3">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>分项详情与算法依据</div>
+          <span class="panel-sub">点击展开查看逐条证据</span>
+        </div>
+        <div class="panel-body" id="metrics-body"></div>
+      </section>
+    </div>
+
+    <div id="placeholder" class="panel mt-3">
+      <div class="panel-body">
+        <div class="empty">
+          <div class="big">◇</div>
+          <div>提交序列后，这里会展示 9 项性质评分、风险位点轨道图与完整算法依据</div>
+          <div class="text-xs mt-1">首次运行需要加载 ESM-2 权重（约 2.5 GB，已下载则数秒完成）</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="app-status"></footer>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script>
+(function () {
+  const { get, post, fmt, CONST } = window.API;
+  const App = window.App;
+  const el = (id) => document.getElementById(id);
+
+  let proteinType = "generic";
+  let hostSystem = "ecoli";
+  let current = null;
+
+  const LOCOUS_META = {
+    deamidation: { label: "脱酰胺", color: "#f59e0b" },
+    oxidation: { label: "氧化敏感", color: "#f43f5e" },
+    isomerization: { label: "异构化", color: "#c084fc" },
+    cleavage_site: { label: "酶切位点", color: "#38bdf8" },
+    hydroxylation: { label: "羟化位点", color: "#7c5cff" },
+    aggregation_hotspot: { label: "聚集热点", color: "#fb7185" },
+    stalling_motif: { label: "翻译停滞", color: "#94a3b8" },
+    hydrophobic_run: { label: "疏水片段", color: "#f97316" },
+    acid_labile_bond: { label: "酸敏感键", color: "#eab308" },
+    cysteine: { label: "半胱氨酸", color: "#14b8a6" },
+    n_glycosylation: { label: "N-糖基化", color: "#34d399" },
+    o_glycosylation: { label: "O-糖基化", color: "#2dd4bf" },
+    pyroglutamate: { label: "焦谷氨酸", color: "#a3e635" },
+    glycation: { label: "糖化", color: "#facc15" }
+  };
+
+  /* ---------------- 参数区 ---------------- */
+  function renderChips() {
+    el("protein-types").innerHTML = CONST.PROTEIN_TYPES.map(
+      (type) => `<span class="chip${type.key === proteinType ? " active" : ""}" data-type="${type.key}">${type.label}</span>`
+    ).join("");
+    el("protein-types").querySelectorAll(".chip").forEach((chip) =>
+      chip.addEventListener("click", () => {
+        proteinType = chip.dataset.type;
+        renderChips();
+      })
+    );
+  }
+
+  function renderHosts() {
+    el("host").innerHTML = CONST.HOST_SYSTEMS.map(
+      (host) => `<option value="${host.key}"${host.key === hostSystem ? " selected" : ""}>${host.label}</option>`
+    ).join("");
+    updateHostHint();
+  }
+
+  async function updateHostHint() {
+    try {
+      const catalog = await get("/property/catalog");
+      el("host-hint").textContent =
+        "宿主密码子表来自 Kazusa 官方数据库（scripts/fetch_codon_usage.py 生成），仅蛋白序列时无法计算真正的 CAI。";
+    } catch (_) {}
+  }
+
+  /* ---------------- 运行 ---------------- */
+  async function run() {
+    const sequence = el("sequence").value.trim();
+    if (!sequence) {
+      App.toast("请先输入序列", "warn");
+      return;
+    }
+    const button = el("btn-run");
+    button.disabled = true;
+    button.textContent = "预测中…";
+    el("job-status").innerHTML = '<span class="badge info">计算中</span>';
+
+    try {
+      const accepted = await post("/property/predict", {
+        sequence,
+        protein_type: proteinType,
+        host_system: hostSystem,
+        use_structure: el("use-structure").checked,
+        use_esm: el("use-esm").checked,
+        project_id: App.currentProjectId()
+      });
+
+      const result = await window.API.pollJob(accepted.job_id, {
+        onProgress: (job) => {
+          el("job-status").innerHTML = `<span class="badge info">${fmt.escape(job.stage || "处理中")} ${Math.round(
+            (job.progress || 0) * 100
+          )}%</span>`;
+        }
+      });
+
+      current = result;
+      render(result);
+      el("job-status").innerHTML = `<span class="badge ok">完成 · ${fmt.duration(
+        (result.summary && result.summary.elapsed_seconds) || 0
+      )}</span>`;
+      App.toast("性质预测完成", "ok");
+    } catch (err) {
+      el("job-status").innerHTML = '<span class="badge danger">失败</span>';
+      App.toastError(err);
+    } finally {
+      button.disabled = false;
+      button.textContent = "开始预测";
+    }
+  }
+
+  /* ---------------- 渲染 ---------------- */
+  function render(data) {
+    el("placeholder").classList.add("hidden");
+    el("result").classList.remove("hidden");
+
+    const summary = data.summary || {};
+    const warnings = data.warnings || [];
+    el("alerts").innerHTML = warnings
+      .map((warning) => App.render.alert(fmt.escape(warning), "warn"))
+      .join("");
+
+    /* 概览卡片 */
+    el("overview-cards").innerHTML = [
+      App.render.stat("综合评分", fmt.num(summary.overall_score, 1), {
+        foot: "9 项指标平均（越高越好）"
+      }),
+      App.render.stat("高风险项", fmt.int((summary.risk_counts || {}).high || 0), {
+        foot: "需要优先关注的指标", plain: true
+      }),
+      App.render.stat("中风险项", fmt.int((summary.risk_counts || {}).medium || 0), { plain: true }),
+      App.render.stat("低风险项", fmt.int((summary.risk_counts || {}).low || 0), { plain: true }),
+      App.render.stat("结构增强", data.structure_used ? "已启用" : "未启用", {
+        foot: data.structure_used ? "含 pLDDT / SASA 证据" : "断网或已关闭",
+        plain: true
+      }),
+      App.render.stat("ESM-2 自然度", data.esm_used ? "已计入" : "未计入", {
+        foot: data.esm_used ? "热稳定性含该证据" : "已从权重中剔除",
+        plain: true
+      })
+    ].join("");
+
+    /* 雷达图 */
+    const radarItems = (summary.radar || []).map((item) => ({ label: item.label, score: item.score }));
+    window.Charts.radar(el("radar-chart"), radarItems);
+    el("radar-sub").textContent = `${radarItems.length} 个维度 · 0-100 分`;
+
+    /* 风险分布 */
+    window.Charts.riskCounts(el("risk-chart"), summary.risk_counts || {});
+
+    /* 净电荷曲线 */
+    const profile = (data.biophys || {}).charge_profile || {};
+    if (profile.ph && profile.charge) {
+      window.Charts.line(el("charge-chart"), profile.ph, [
+        { name: "净电荷", data: profile.charge, color: "#00e0b8", area: true }
+      ], { xLabel: "pH", yLabel: "净电荷", smooth: true });
+    }
+
+    /* 轨道图 */
+    renderTrack(data);
+
+    /* 生物物理量 */
+    renderBiophys(data.biophys || {});
+
+    /* 分项详情 */
+    renderMetrics(data.metrics || {});
+  }
+
+  function renderTrack(data) {
+    const metrics = data.metrics || {};
+    const length = data.length || 0;
+    const lanes = {};
+
+    Object.values(metrics).forEach((metric) => {
+      (metric.locus || []).forEach((item) => {
+        const type = item.type || "unknown";
+        if (!LOCOUS_META[type]) return;
+        if (!lanes[type]) lanes[type] = [];
+        lanes[type].push(item);
+      });
+    });
+
+    // 聚集倾向轨道（逐残基曲线）
+    const aggregation = (metrics.aggregation && metrics.aggregation.meta && metrics.aggregation.meta.profile) || [];
+
+    if (!Object.keys(lanes).length && !aggregation.length) {
+      el("track").innerHTML = '<div class="empty" style="padding:24px">该蛋白未检测到明显风险位点</div>';
+      el("track-legend").innerHTML = "";
+      el("track-sub").textContent = `${length} aa`;
+      return;
+    }
+
+    const laneKeys = Object.keys(lanes).sort((a, b) => lanes[b].length - lanes[a].length);
+    el("track-sub").textContent = `${length} aa · ${laneKeys.length} 类位点 · 共 ${Object.values(lanes).reduce(
+      (acc, items) => acc + items.length,
+      0
+    )} 个标记`;
+
+    const rulerTicks = [];
+    const tickCount = Math.min(12, Math.max(2, Math.floor(length / 80)));
+    for (let i = 0; i <= tickCount; i += 1) {
+      const position = Math.round((i / tickCount) * length);
+      rulerTicks.push(`<span style="left:${(position / length) * 100}%">${position}</span>`);
+    }
+
+    el("track").innerHTML = `
+      <div class="track-ruler">${rulerTicks.join("")}</div>
+      ${laneKeys
+        .map(
+          (key) => `
+        <div class="track-lane">
+          <span class="lane-label">${LOCOUS_META[key].label}</span>
+          ${lanes[key]
+            .slice(0, 400)
+            .map((item) => {
+              const left = ((item.position || 0) / Math.max(1, length)) * 100;
+              const title = `${LOCOUS_META[key].label} @ ${(item.position || 0) + 1}
+${item.motif ? "基序 " + item.motif : ""}${item.note ? "\n" + item.note : ""}`;
+              return `<i class="track-mark ${key}" style="left:${left.toFixed(3)}%" title="${fmt.escape(title)}"></i>`;
+            })
+            .join("")}
+        </div>`
+        )
+        .join("")}
+      ${
+        aggregation.length
+          ? `<div class="track-track">
+               <canvas class="track-canvas" id="agg-track"></canvas>
+             </div>`
+          : ""
+      }
+    `;
+
+    el("track-legend").innerHTML =
+      laneKeys
+        .map(
+          (key) =>
+            `<span><i style="background:${LOCOUS_META[key].color}"></i>${LOCOUS_META[key].label}（${lanes[key].length}）</span>`
+        )
+        .join("") +
+      (aggregation.length ? `<span><i style="background:linear-gradient(90deg,#00e0b8,#f43f5e)"></i>聚集倾向轨道（0-100）</span>` : "");
+
+    if (aggregation.length) drawAggregationTrack(aggregation);
+  }
+
+  function drawAggregationTrack(profile) {
+    const canvas = el("agg-track");
+    if (!canvas) return;
+    const ratio = window.devicePixelRatio || 1;
+    const width = canvas.clientWidth || 800;
+    const height = 26;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+    ctx.clearRect(0, 0, width, height);
+
+    const step = width / profile.length;
+    profile.forEach((item, index) => {
+      const value = Math.max(0, Math.min(100, item.score));
+      const barHeight = (value / 100) * (height - 4);
+      const hue = 170 - (value / 100) * 170; // 青 -> 红
+      ctx.fillStyle = `hsl(${hue}, 82%, ${58 - (value / 100) * 12}%)`;
+      ctx.fillRect(index * step, height - barHeight - 2, Math.max(0.6, step - 0.25), barHeight);
+    });
+  }
+
+  function renderBiophys(values) {
+    const groups = values.group_ratios || {};
+    const special = values.special_residues || {};
+    const cards = [
+      { label: "分子量", value: fmt.num(values.molecular_weight_kda, 2), unit: "kDa" },
+      { label: "等电点 pI", value: fmt.num(values.isoelectric_point, 2), unit: "" },
+      { label: "GRAVY 疏水指数", value: fmt.num(values.gravy, 4), unit: "" },
+      { label: "不稳定指数", value: fmt.num(values.instability_index, 2), unit: "",
+        foot: values.instability_class || "" },
+      { label: "芳香性", value: fmt.num(values.aromaticity, 4), unit: "" },
+      { label: "净电荷 (pH 7)", value: fmt.num(values.net_charge_ph7, 2), unit: "e" },
+      { label: "半胱氨酸", value: fmt.int(special.cys), unit: "个",
+        foot: `潜在二硫键 ${Math.floor((special.cys || 0) / 2)} 对` },
+      { label: "疏水残基占比", value: fmt.percent(groups.hydrophobic, 1), unit: "" }
+    ];
+
+    el("biophys-body").innerHTML = `
+      <div class="grid grid-4">${cards
+        .map((card) =>
+          App.render.stat(card.label, card.value, { unit: card.unit, foot: card.foot, plain: true, small: true })
+        )
+        .join("")}</div>
+      <div class="mt-2">
+        <div class="text-xs text-2 mb-1">氨基酸组成（%）</div>
+        <div class="chart chart-sm" id="aa-chart"></div>
+      </div>
+      <details class="acc mt-2"><summary>算法来源</summary><div class="acc-body">
+        ${Object.entries(values.algorithm || {})
+          .map(([key, value]) => `<div><b>${fmt.escape(key)}</b>：${fmt.escape(value)}</div>`)
+          .join("")}
+      </div></details>
+    `;
+
+    const ratios = values.ratios || {};
+    const entries = Object.entries(ratios).sort((a, b) => b[1] - a[1]);
+    window.Charts.bar(
+      el("aa-chart"),
+      entries.map(([key]) => key),
+      entries.map(([, value]) => Number((value * 100).toFixed(2))),
+      { rotate: 0 }
+    );
+  }
+
+  function renderMetrics(metrics) {
+    const ORDER = [
+      "thermostability", "alkali_stability", "acid_stability", "solubility", "aggregation",
+      "expression", "ptm_sites", "immunogenicity", "protease_resistance"
+    ];
+    const keys = ORDER.filter((key) => metrics[key]).concat(
+      Object.keys(metrics).filter((key) => !ORDER.includes(key))
+    );
+
+    el("metrics-body").innerHTML = keys
+      .map((key, index) => {
+        const metric = metrics[key];
+        const evidence = (metric.evidence || [])
+          .map(
+            (item) => `
+          <div class="evidence-row">
+            <div class="name">${fmt.escape(item.label)}</div>
+            <div class="value">${fmt.escape(String(item.value))}</div>
+            <div class="contrib-bar">
+              <span class="bar">
+                <i class="${item.contribution >= 0 ? "pos" : "neg"}"
+                   style="width:${Math.min(50, Math.abs(item.contribution) * 2.2)}%"></i>
+              </span>
+              <span class="val ${item.contribution >= 0 ? "pos" : "neg"}">
+                ${item.contribution >= 0 ? "+" : ""}${fmt.num(item.contribution, 2)}</span>
+            </div>
+            ${item.rationale ? `<div class="why">${fmt.escape(item.rationale)}</div>` : ""}
+          </div>`
+          )
+          .join("");
+
+        return `
+        <details class="acc"${index === 0 ? " open" : ""}>
+          <summary>
+            <span style="min-width:132px">${fmt.escape(metric.label)}</span>
+            <span class="score-pill ${fmt.scoreClass(metric.score)}" style="min-width:52px;text-align:center">
+              ${fmt.num(metric.score, 1)}</span>
+            ${fmt.riskBadge(metric.risk)}
+            <span class="spacer"></span>
+            <span class="text-xs text-2">置信度 ${fmt.percent(metric.confidence, 0)}</span>
+          </summary>
+          <div class="acc-body">
+            <div class="mb-1">${fmt.escape(metric.rationale || "")}</div>
+            <div class="text-xs text-2 mb-2">算法：${fmt.escape(metric.algorithm || "—")}</div>
+            ${evidence || '<div class="text-2 text-sm">暂无分项证据</div>'}
+            ${
+              metric.locus && metric.locus.length
+                ? `<div class="text-xs text-2 mt-2">位点级明细：${metric.locus.length} 条（已在上方轨道图可视化）</div>`
+                : ""
+            }
+          </div>
+        </details>`;
+      })
+      .join("");
+  }
+
+  /* ---------------- 事件 ---------------- */
+  el("sequence").addEventListener("input", () => {
+    const length = fmt.sequenceLength(el("sequence").value);
+    el("seq-len").textContent = `${length} aa`;
+  });
+  el("host").addEventListener("change", (event) => {
+    hostSystem = event.target.value;
+    updateHostHint();
+  });
+  el("btn-run").addEventListener("click", run);
+  window.addEventListener("resize", () => window.Charts.resizeAll());
+
+  (async function main() {
+    await App.init("property");
+    renderChips();
+    renderHosts();
+
+    const runId = new URLSearchParams(location.search).get("run_id");
+    if (runId) {
+      try {
+        const record = await get(`/property/runs/${runId}`);
+        render(record);
+        el("job-status").innerHTML = `<span class="badge info">历史记录 #${runId}</span>`;
+        el("sequence").value = "";
+        el("seq-len").textContent = `${record.length} aa`;
+      } catch (err) {
+        App.toastError(err);
+      }
+    }
+  })();
+})();
+</script>
+</body>
+</html>

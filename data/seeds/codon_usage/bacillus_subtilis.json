@@ -1,0 +1,396 @@
+{
+  "table_name": "bacillus_subtilis",
+  "label": "Bacillus subtilis",
+  "organism": "Bacillus subtilis",
+  "species_id": 1423,
+  "n_cds": 2529,
+  "n_codons": 815445,
+  "source": "https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=1423",
+  "fetched_at": "2026-09-15T23:14:34",
+  "codons": {
+    "TTT": {
+      "amino_acid": "F",
+      "fraction": 0.68,
+      "per_thousand": 30.0,
+      "count": 24450
+    },
+    "TCT": {
+      "amino_acid": "S",
+      "fraction": 0.2,
+      "per_thousand": 12.7,
+      "count": 10320
+    },
+    "TAT": {
+      "amino_acid": "Y",
+      "fraction": 0.65,
+      "per_thousand": 23.3,
+      "count": 18967
+    },
+    "TGT": {
+      "amino_acid": "C",
+      "fraction": 0.46,
+      "per_thousand": 3.6,
+      "count": 2939
+    },
+    "TTC": {
+      "amino_acid": "F",
+      "fraction": 0.32,
+      "per_thousand": 14.3,
+      "count": 11677
+    },
+    "TCC": {
+      "amino_acid": "S",
+      "fraction": 0.13,
+      "per_thousand": 8.3,
+      "count": 6766
+    },
+    "TAC": {
+      "amino_acid": "Y",
+      "fraction": 0.35,
+      "per_thousand": 12.6,
+      "count": 10290
+    },
+    "TGC": {
+      "amino_acid": "C",
+      "fraction": 0.54,
+      "per_thousand": 4.3,
+      "count": 3472
+    },
+    "TTA": {
+      "amino_acid": "L",
+      "fraction": 0.21,
+      "per_thousand": 19.8,
+      "count": 16167
+    },
+    "TCA": {
+      "amino_acid": "S",
+      "fraction": 0.23,
+      "per_thousand": 14.6,
+      "count": 11874
+    },
+    "TAA": {
+      "amino_acid": "*",
+      "fraction": 0.61,
+      "per_thousand": 1.9,
+      "count": 1562
+    },
+    "TGA": {
+      "amino_acid": "*",
+      "fraction": 0.24,
+      "per_thousand": 0.8,
+      "count": 621
+    },
+    "TTG": {
+      "amino_acid": "L",
+      "fraction": 0.16,
+      "per_thousand": 15.8,
+      "count": 12914
+    },
+    "TCG": {
+      "amino_acid": "S",
+      "fraction": 0.1,
+      "per_thousand": 6.5,
+      "count": 5266
+    },
+    "TAG": {
+      "amino_acid": "*",
+      "fraction": 0.15,
+      "per_thousand": 0.5,
+      "count": 381
+    },
+    "TGG": {
+      "amino_acid": "W",
+      "fraction": 1.0,
+      "per_thousand": 10.7,
+      "count": 8765
+    },
+    "CTT": {
+      "amino_acid": "L",
+      "fraction": 0.23,
+      "per_thousand": 21.8,
+      "count": 17772
+    },
+    "CCT": {
+      "amino_acid": "P",
+      "fraction": 0.28,
+      "per_thousand": 10.6,
+      "count": 8640
+    },
+    "CAT": {
+      "amino_acid": "H",
+      "fraction": 0.68,
+      "per_thousand": 15.7,
+      "count": 12832
+    },
+    "CGT": {
+      "amino_acid": "R",
+      "fraction": 0.18,
+      "per_thousand": 7.2,
+      "count": 5903
+    },
+    "CTC": {
+      "amino_acid": "L",
+      "fraction": 0.11,
+      "per_thousand": 10.7,
+      "count": 8697
+    },
+    "CCC": {
+      "amino_acid": "P",
+      "fraction": 0.09,
+      "per_thousand": 3.5,
+      "count": 2850
+    },
+    "CAC": {
+      "amino_acid": "H",
+      "fraction": 0.32,
+      "per_thousand": 7.5,
+      "count": 6141
+    },
+    "CGC": {
+      "amino_acid": "R",
+      "fraction": 0.2,
+      "per_thousand": 8.2,
+      "count": 6720
+    },
+    "CTA": {
+      "amino_acid": "L",
+      "fraction": 0.05,
+      "per_thousand": 4.9,
+      "count": 3975
+    },
+    "CCA": {
+      "amino_acid": "P",
+      "fraction": 0.19,
+      "per_thousand": 7.1,
+      "count": 5796
+    },
+    "CAA": {
+      "amino_acid": "Q",
+      "fraction": 0.52,
+      "per_thousand": 20.4,
+      "count": 16620
+    },
+    "CGA": {
+      "amino_acid": "R",
+      "fraction": 0.1,
+      "per_thousand": 4.3,
+      "count": 3537
+    },
+    "CTG": {
+      "amino_acid": "L",
+      "fraction": 0.24,
+      "per_thousand": 23.0,
+      "count": 18757
+    },
+    "CCG": {
+      "amino_acid": "P",
+      "fraction": 0.44,
+      "per_thousand": 16.3,
+      "count": 13316
+    },
+    "CAG": {
+      "amino_acid": "Q",
+      "fraction": 0.48,
+      "per_thousand": 18.5,
+      "count": 15089
+    },
+    "CGG": {
+      "amino_acid": "R",
+      "fraction": 0.17,
+      "per_thousand": 6.9,
+      "count": 5664
+    },
+    "ATT": {
+      "amino_acid": "I",
+      "fraction": 0.49,
+      "per_thousand": 36.2,
+      "count": 29487
+    },
+    "ACT": {
+      "amino_acid": "T",
+      "fraction": 0.16,
+      "per_thousand": 8.7,
+      "count": 7082
+    },
+    "AAT": {
+      "amino_acid": "N",
+      "fraction": 0.56,
+      "per_thousand": 22.9,
+      "count": 18702
+    },
+    "AGT": {
+      "amino_acid": "S",
+      "fraction": 0.11,
+      "per_thousand": 6.8,
+      "count": 5577
+    },
+    "ATC": {
+      "amino_acid": "I",
+      "fraction": 0.37,
+      "per_thousand": 27.2,
+      "count": 22167
+    },
+    "ACC": {
+      "amino_acid": "T",
+      "fraction": 0.17,
+      "per_thousand": 9.0,
+      "count": 7342
+    },
+    "AAC": {
+      "amino_acid": "N",
+      "fraction": 0.44,
+      "per_thousand": 17.8,
+      "count": 14522
+    },
+    "AGC": {
+      "amino_acid": "S",
+      "fraction": 0.23,
+      "per_thousand": 14.4,
+      "count": 11766
+    },
+    "ATA": {
+      "amino_acid": "I",
+      "fraction": 0.13,
+      "per_thousand": 9.8,
+      "count": 7960
+    },
+    "ACA": {
+      "amino_acid": "T",
+      "fraction": 0.4,
+      "per_thousand": 21.6,
+      "count": 17642
+    },
+    "AAA": {
+      "amino_acid": "K",
+      "fraction": 0.7,
+      "per_thousand": 48.4,
+      "count": 39449
+    },
+    "AGA": {
+      "amino_acid": "R",
+      "fraction": 0.25,
+      "per_thousand": 10.5,
+      "count": 8561
+    },
+    "ATG": {
+      "amino_acid": "M",
+      "fraction": 1.0,
+      "per_thousand": 26.3,
+      "count": 21424
+    },
+    "ACG": {
+      "amino_acid": "T",
+      "fraction": 0.27,
+      "per_thousand": 14.9,
+      "count": 12110
+    },
+    "AAG": {
+      "amino_acid": "K",
+      "fraction": 0.3,
+      "per_thousand": 20.8,
+      "count": 16997
+    },
+    "AGG": {
+      "amino_acid": "R",
+      "fraction": 0.1,
+      "per_thousand": 4.1,
+      "count": 3341
+    },
+    "GTT": {
+      "amino_acid": "V",
+      "fraction": 0.28,
+      "per_thousand": 18.6,
+      "count": 15193
+    },
+    "GCT": {
+      "amino_acid": "A",
+      "fraction": 0.24,
+      "per_thousand": 18.6,
+      "count": 15150
+    },
+    "GAT": {
+      "amino_acid": "D",
+      "fraction": 0.64,
+      "per_thousand": 33.2,
+      "count": 27108
+    },
+    "GGT": {
+      "amino_acid": "G",
+      "fraction": 0.19,
+      "per_thousand": 13.0,
+      "count": 10566
+    },
+    "GTC": {
+      "amino_acid": "V",
+      "fraction": 0.26,
+      "per_thousand": 17.3,
+      "count": 14067
+    },
+    "GCC": {
+      "amino_acid": "A",
+      "fraction": 0.22,
+      "per_thousand": 16.5,
+      "count": 13433
+    },
+    "GAC": {
+      "amino_acid": "D",
+      "fraction": 0.36,
+      "per_thousand": 19.0,
+      "count": 15485
+    },
+    "GGC": {
+      "amino_acid": "G",
+      "fraction": 0.34,
+      "per_thousand": 23.3,
+      "count": 18967
+    },
+    "GTA": {
+      "amino_acid": "V",
+      "fraction": 0.2,
+      "per_thousand": 13.0,
+      "count": 10638
+    },
+    "GCA": {
+      "amino_acid": "A",
+      "fraction": 0.28,
+      "per_thousand": 21.1,
+      "count": 17205
+    },
+    "GAA": {
+      "amino_acid": "E",
+      "fraction": 0.68,
+      "per_thousand": 48.1,
+      "count": 39217
+    },
+    "GGA": {
+      "amino_acid": "G",
+      "fraction": 0.31,
+      "per_thousand": 21.8,
+      "count": 17743
+    },
+    "GTG": {
+      "amino_acid": "V",
+      "fraction": 0.26,
+      "per_thousand": 17.3,
+      "count": 14105
+    },
+    "GCG": {
+      "amino_acid": "A",
+      "fraction": 0.26,
+      "per_thousand": 19.8,
+      "count": 16176
+    },
+    "GAG": {
+      "amino_acid": "E",
+      "fraction": 0.32,
+      "per_thousand": 22.6,
+      "count": 18429
+    },
+    "GGG": {
+      "amino_acid": "G",
+      "fraction": 0.16,
+      "per_thousand": 11.2,
+      "count": 9094
+    }
+  }
+}

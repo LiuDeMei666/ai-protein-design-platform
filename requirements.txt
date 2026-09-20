@@ -1,0 +1,50 @@
+# ============================================================
+# AI 辅助蛋白设计平台 - Python 依赖清单
+# 目标环境：conda env `dbz` (Python 3.11)
+# 安装方式见 docs/部署文档.md 与 README.md
+# ============================================================
+
+# ---------- Web 服务框架 ----------
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+python-multipart==0.0.20
+Jinja2==3.1.5
+httpx==0.28.1
+tenacity==9.0.0
+PyYAML==6.0.2
+
+# ---------- 数据存储 ----------
+SQLAlchemy==2.0.36
+
+# ---------- 科学计算 ----------
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.14.1
+scikit-learn==1.5.2
+openpyxl==3.1.5
+
+# ---------- 生物信息学 ----------
+biopython==1.84
+
+# ---------- 深度学习 / 蛋白语言模型 ----------
+# torch 2.5.1 在 PyPI 上的 linux wheel 即为 CUDA 12.4 构建，与本机驱动 535.183.01 匹配
+torch==2.5.1
+transformers==4.47.1
+safetensors==0.4.5
+peft==0.14.0
+
+# ---------- 测试 ----------
+pytest==8.3.4
+pytest-asyncio==0.25.0
+
+# ---------- 可选的开发/交付工具 ----------
+# 以下三项不是运行时依赖，仅用于测试与文档生成，可按需安装：
+#
+#   pip install playwright python-docx
+#   python -m playwright install chromium
+#
+# playwright    前端端到端验证（scripts/verify_ui.py）
+# python-docx   Markdown 交付文档转 Word（scripts/make_docs.py）
+# openpyxl      已在上方列出，同时用于 Excel 模板生成（scripts/make_templates.py）

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>突变设计 · AI 辅助蛋白设计平台</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="app">
+  <header id="app-nav"></header>
+
+  <main class="app-main">
+    <div class="page-head">
+      <div>
+        <div class="page-title">智能突变设计</div>
+        <div class="page-desc">
+          对全部可突变位点做 ESM-2 零样本扫描（掩码边缘似然比），按稳定性、活性、折叠可行性、
+          表达适配与新增风险五个维度打分排序。每条候选都给出逐维度中文依据，便于实验人员优先筛选。
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn btn-sm" id="btn-export-csv" disabled>导出 CSV</button>
+        <button class="btn btn-sm" id="btn-export-md" disabled>导出报告</button>
+        <button class="btn btn-primary" id="btn-run">开始设计</button>
+      </div>
+    </div>
+
+    <div id="alerts"></div>
+
+    <!-- 参数 -->
+    <section class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="dot"></span>设计参数</div>
+        <span class="panel-sub" id="job-status">未提交</span>
+      </div>
+      <div class="panel-body">
+        <div class="grid grid-aside-main" style="gap:16px;align-items:start">
+          <div>
+            <div class="field">
+              <div class="field-label">
+                <span>目标蛋白序列</span>
+                <span class="text-xs text-2" id="seq-len">0 aa</span>
+              </div>
+              <textarea class="textarea seq" id="sequence" spellcheck="false" style="min-height:104px"
+                placeholder="粘贴氨基酸序列（突变设计要求全部为标准氨基酸）"></textarea>
+            </div>
+            <div class="row wrap" style="gap:16px">
+              <label class="switch">
+                <input type="checkbox" id="use-structure" checked>
+                <span class="track"></span><span>使用结构先验</span>
+              </label>
+              <button class="btn btn-sm" id="btn-sample">载入示例序列</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="field">
+              <div class="field-label"><span>蛋白类型</span></div>
+              <div class="chips" id="protein-types"></div>
+            </div>
+            <div class="field">
+              <div class="field-label"><span>设计模式</span></div>
+              <div class="chips" id="modes"></div>
+              <div class="field-hint" id="mode-hint"></div>
+            </div>
+            <div class="grid grid-2" style="gap:10px">
+              <div class="field mb-0">
+                <div class="field-label"><span>返回候选数</span></div>
+                <input class="input" type="number" id="top-n" value="50" min="1" max="2000">
+              </div>
+              <div class="field mb-0">
+                <div class="field-label"><span>宿主体系</span></div>
+                <select class="select" id="host"></select>
+              </div>
+            </div>
+            <div class="grid grid-2 mt-2" style="gap:10px" id="combo-params">
+              <div class="field mb-0">
+                <div class="field-label"><span>组合最多位点</span></div>
+                <input class="input" type="number" id="max-sites" value="3" min="1" max="5">
+              </div>
+              <div class="field mb-0">
+                <div class="field-label"><span>束搜索宽度</span></div>
+                <input class="input" type="number" id="beam-width" value="8" min="1" max="32">
+              </div>
+            </div>
+            <div class="grid grid-2 mt-2" style="gap:10px" id="region-params">
+              <div class="field mb-0">
+                <div class="field-label"><span>区段起点（可选）</span></div>
+                <input class="input" type="number" id="region-start" placeholder="1" min="1">
+              </div>
+              <div class="field mb-0">
+                <div class="field-label"><span>区段终点（可选）</span></div>
+                <input class="input" type="number" id="region-end" placeholder="全长" min="1">
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 人工指定突变（验证 MVP 工作流）
+                 ------------------------------------------------------------
+                 与上面的 AI 自动三种模式互斥：位点、替换氨基酸、锁定位点
+                 全部由人给出，平台只负责按同一套评分链路逐条评估。
+                 ============================================================ -->
+            <div class="mt-2 hidden" id="manual-params">
+              <div class="grid grid-2" style="gap:10px">
+                <div class="field mb-0">
+                  <div class="field-label"><span>序列名（生成 sequence_id 用）</span></div>
+                  <input class="input" id="manual-name" value="Hevb6" spellcheck="false">
+                </div>
+                <div class="field mb-0">
+                  <div class="field-label"><span>锁定位点（禁止突变）</span></div>
+                  <input class="input" id="manual-locked" placeholder="3,12,17,18,24,31,37,41" spellcheck="false">
+                </div>
+              </div>
+
+              <div class="field mt-2">
+                <div class="field-label">
+                  <span>目标位点（人工选定，1-based）</span>
+                  <span class="text-xs text-2">逗号分隔</span>
+                </div>
+                <input class="input" id="manual-targets" placeholder="23,30,34,38" spellcheck="false">
+                <div class="field-hint">
+                  基于结构 + 文献挑出的表位残基。平台只评估这些位点，不做全位点扫描；
+                  锁定位点同样由人工填写，平台不做自动识别。两者冲突时会明确报错，不会静默跳过。
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">
+                  <span>每位点候选氨基酸</span>
+                  <span class="text-xs text-2" id="manual-aa-hint">不勾选则套用默认集合</span>
+                </div>
+                <div id="manual-aa-editor"></div>
+              </div>
+
+              <div class="field">
+                <div class="field-label"><span>突变备注（可选）</span></div>
+                <input class="input" id="manual-note" placeholder="如：破坏构象表位，降低 IgE 结合" spellcheck="false">
+                <div class="field-hint">写入导出 CSV 的 mutation_note 列，供湿实验挑样与登记。</div>
+              </div>
+
+              <div class="manual-actions">
+                <button class="btn btn-sm" id="btn-manual-preview" type="button">预览突变清单</button>
+                <button class="btn btn-sm" id="btn-manual-fasta" type="button" disabled>导出 FASTA</button>
+                <button class="btn btn-sm" id="btn-manual-csv" type="button" disabled>导出 CSV</button>
+                <span class="text-xs text-2" id="manual-summary">—</span>
+              </div>
+
+              <div id="manual-preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 结果 -->
+    <div id="result" class="hidden">
+      <div class="grid grid-6 mt-3" id="summary-cards"></div>
+
+      <div class="grid grid-main-aside mt-3">
+        <!-- 候选表 -->
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>候选方案排序</div>
+            <div class="row" style="gap:8px">
+              <input class="input" id="min-score" type="number" placeholder="最低分" style="width:86px;padding:4px 8px;font-size:12px">
+              <span class="text-xs text-2" id="candidate-sub">—</span>
+            </div>
+          </div>
+          <div class="panel-body flush">
+            <div class="table-wrap" style="max-height:640px" id="candidate-table"></div>
+          </div>
+        </section>
+
+        <!-- 评分卡 + 3D -->
+        <div class="col">
+          <section class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dot"></span>可解释评分卡</div>
+              <span class="panel-sub" id="card-sub">选择左侧候选查看</span>
+            </div>
+            <div class="panel-body" id="card-body">
+              <div class="text-2 text-sm">点击候选行，这里会展示瀑布式分数分解与逐维度依据。</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div class="panel-title"><span class="dot"></span>结构热点联动</div>
+              <div class="row" style="gap:8px">
+                <span class="panel-sub" id="viewer-sub">—</span>
+                <a class="btn btn-sm" id="btn-viewer-pdb" href="#" download aria-disabled="true">下载 PDB</a>
+              </div>
+            </div>
+            <div class="panel-body flush">
+              <div class="viewer-shell">
+                <div id="viewer" style="position:relative;height:290px">
+                  <div class="viewer-overlay">
+                    <div style="font-size:22px;opacity:.4">◇</div>
+                    <div class="text-xs">选择候选后在此高亮突变位点</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- 组合候选 -->
+      <section class="panel mt-3" id="combo-panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="dot"></span>多点组合候选</div>
+          <span class="panel-sub">束搜索 + 上下文依赖的上位效应精评</span>
+        </div>
+        <div class="panel-body flush">
+          <div class="table-wrap" style="max-height:360px" id="combo-table"></div>
+        </div>
+      </section>
+
+      <!-- 扫描透明度 -->
+      <div class="grid grid-2 mt-3">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>扫描范围与保护位点</div>
+            <span class="panel-sub" id="plan-sub">—</span>
+          </div>
+          <div class="panel-body" id="plan-body"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="dot"></span>改造策略建议</div>
+          </div>
+          <div class="panel-body" id="hints-body"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer id="app-status"></footer>
+</div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/vendor/3Dmol-min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/viewer3d.js"></script>
+<script src="/static/js/design.js"></script>
+<script>
+(function () {
+  const el = (id) => document.getElementById(id);
+  const { fmt, CONST } = window.API;
+  const App = window.App;
+  const Design = window.Design;
+
+  (async function main() {
+    await App.init("design");
+    Design.init({ App, fmt, CONST, el });
+    await Design.bindCatalog();
+
+    const runId = new URLSearchParams(location.search).get("run_id");
+    if (runId) {
+      try {
+        const run = await window.API.get(`/design/runs/${runId}`);
+        const candidates = await window.API.get(`/design/runs/${runId}/candidates`, { limit: 200 });
+        el("sequence").value = run.sequence || "";
+        Design.loadStoredRun(run, candidates);
+        App.toast(`已载入历史批次 #${runId}`, "info");
+      } catch (err) {
+        App.toastError(err);
+      }
+    }
+  })();
+})();
+</script>
+</body>
+</html>
